@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">LARPer</string>
+    <string name="account_display_name">acctDisplayName</string>
+    <string name="account_id">acctId</string>
 </resources>
