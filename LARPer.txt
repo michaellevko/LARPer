@@ -1,0 +1,33 @@
+Architecture:
+1. App login via google id managed by MainActivity and once token is granted, pass to AppActivity
+2. Each Functional tab managed by different Fragment.
+3. Each item saved passes a messege notification to AlertDialogFragment to display to user.
+4. Set dialog for error messages incase of failure to perform operation against DB or failure interacting with other users.
+4. Local DB (SQLite) to save user token fo future logins + all saved data durring session.
+5. Remote DB (firebase) to sync with local DB on user profiles for verification upon interaction by other clients.
+  - UserProfile: google id + user settings: scenario id, skills and their levels
+
+Nice 2 Have:
+1. Scenario Templates. Idea to set the LARPer as a multipurpose LARPing tool for different scenarios. Template comes with suggested classes and skills and changes App background
+	* PostApocalyptic
+	* D&D
+	* Custom - Make your own
+  - Upon user interaction need to check for correlating scenario id.
+
+Questions:
+1. Pre-requisit for project. Sharing data ?
+2. Changed project name. Need to notify teacher ?
+
+
+Workload balance:
+Michael: 
+ - Google Id Activity			1d
+ - AppActivity and Fragments skeleton		1d
+   - w/ Navigation menu (fragment stack)
+ - App functionality Tabs			3d
+Alon: 
+ - Model 					4d
+   - class entities based on design
+   - SQLite 
+   - Firebase 
+   - Local FS
