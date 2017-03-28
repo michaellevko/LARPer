@@ -1,0 +1,87 @@
+{
+  "project_info": {
+    "project_number": "435277285696",
+    "project_id": "firebase-larper"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:435277285696:android:11f893c0597479d9",
+        "android_client_info": {
+          "package_name": "LARPer.apk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "435277285696-ues7lnjark75888issarogfds7dsd0u8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "LARPer.apk",
+            "certificate_hash": "d28fdbc9de2cf9a0da7c299422e222f71f18e305"
+          }
+        },
+        {
+          "client_id": "435277285696-t29og5di4hvbvrpn60vtkva5834nkl9i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC--akBHqyv_Sp4ZsZ5D8mfG60MWI4hAFA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:435277285696:android:aa27473778c25261",
+        "android_client_info": {
+          "package_name": "com.example.user.larper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "435277285696-ufsq8inh8uunt8ter7cmfh16g4m73vgd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.user.larper",
+            "certificate_hash": "d28fdbc9de2cf9a0da7c299422e222f71f18e305"
+          }
+        },
+        {
+          "client_id": "435277285696-t29og5di4hvbvrpn60vtkva5834nkl9i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC--akBHqyv_Sp4ZsZ5D8mfG60MWI4hAFA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
