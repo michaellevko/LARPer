@@ -7,5 +7,16 @@
     <string name="lore_fragment">Lore</string>
     <string name="blueprints_fragment">Blueprints</string>
     <string name="contacts_fragment">Contacts</string>
-    <string name="profile_nickname">Nickname</string>
+    <string name="profile_attr_nickname">Nickname</string>
+    <string name="profile_attr_age">Age</string>
+    <string name="profile_attr_gender">Gender</string>
+    <string name="profile_attr_class">Class</string>
+    <string name="profile_attr_race">Race</string>
+    <string name="profile_attr_hitpoints">HitPoints</string>
+    <string name="profile_attr_bio">Biography</string>
+    <string name="profile_attr_skills">Skills</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sex_male">Male</string>
 </resources>

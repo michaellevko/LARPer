@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -15,19 +16,20 @@ import android.view.View;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity
+        implements InitProfileFragment.OnFragmentInteractionListener{
+
+    String acctDisplayName;
+    int acctId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d("TAG", "MainActivity");
-        String userName = this.getIntent().getExtras()
+        String acctDisplayName = this.getIntent().getExtras()
                 .getString(getResources().getString(R.string.account_display_name));
 
-        /* Check Firebase for user profile
-         * If profile doesnt exist, call InitProfileFragment
-         * Else, pull user profile and call HomeTabFragment*/
 /*
         final ActionBar actionbar = getActionBar();
         actionbar.setNavigationMode(actionbar.NAVIGATION_MODE_TABS);
@@ -79,6 +81,18 @@ public class MainActivity extends Activity {
         for (Map.Entry<String, Fragment> entry : fragmentsHolder.entrySet()) {
             actionbar.addTab(actionbar.newTab().setText(entry.getKey()).setTabListener(tabListener));
         }
+
+        /* Check Firebase for user profile
+         * If profile doesnt exist, call InitProfileFragment
+         * Else, pull user profile and call HomeTabFragment*/
+        getFragmentManager().beginTransaction()
+                .add(R.id.main_fragment_container, InitProfileFragment.newInstance(acctDisplayName))
+                .commit();
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 /*
