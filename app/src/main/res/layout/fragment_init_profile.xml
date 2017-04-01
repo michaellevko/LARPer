@@ -1,44 +1,48 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorPrimary"
     tools:context="com.example.user.larper.InitProfileFragment">
-
-    <include layout="@layout/profile_details"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/hello_acct_tv"/>
+        android:id="@+id/hello_acct_tv"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_width="576dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Please initialize your profile." />
 
         <Button
             android:id="@+id/init_profile_save_btn"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            tools:text="Save Profile" />
+            android:text="Save Profile" />
     </LinearLayout>
 
-    <android.support.constraint.ConstraintLayout
+    <include
+        android:id="@+id/profile_details_view"
+        layout="@layout/profile_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/init_fragment_container">
-    </android.support.constraint.ConstraintLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/linearLayout" />
 
-</LinearLayout>
+</RelativeLayout>

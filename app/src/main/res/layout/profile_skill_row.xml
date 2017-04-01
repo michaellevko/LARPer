@@ -6,7 +6,7 @@
     android:orientation="horizontal">
 
     <EditText
-        android:id="@+id/skill_name"
+        android:id="@+id/skill_name_et"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="3"
@@ -18,21 +18,21 @@
         android:layout_weight="2" />
 
     <Button
-        android:id="@+id/skill_add"
+        android:id="@+id/skill_add_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         tools:text="+" />
 
     <EditText
-        android:id="@+id/skill_level"
+        android:id="@+id/skill_level_et"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:inputType="number" />
 
     <Button
-        android:id="@+id/skill_sub"
+        android:id="@+id/skill_sub_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

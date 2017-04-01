@@ -14,6 +14,15 @@ public class Blueprint {
     private int craftingTimeHours;
     private int craftingTimeMinutes;
 
+    public Blueprint(String name, ArrayList<Ingredient> ingredients,
+                     int craftingHours, int craftingMinutes) {
+        this.name = name;
+        this.ingredients = new ArrayList<>(ingredients);
+        this.priceSum = this.calcPriceSum(ingredients);
+        this.craftingTimeHours = craftingHours;
+        this.craftingTimeMinutes = craftingMinutes;
+    }
+
     public String getName() { return name; }
 
     public void setName(String name) { this.name = name; }
@@ -38,14 +47,6 @@ public class Blueprint {
 
     public void setCraftingTimeMinutes(int craftingTimeMinutes) {
         this.craftingTimeMinutes = craftingTimeMinutes;
-    }
-
-    public Blueprint(String name, ArrayList<Ingredient> ingredients,
-                     int craftingHours, int craftingMinutes) {
-        this.name = name;
-        this.ingredients = new ArrayList<>(ingredients);
-        this.craftingTimeHours = craftingHours;
-        this.craftingTimeMinutes = craftingMinutes;
     }
 
     private float calcPriceSum(ArrayList<Ingredient> ingredients) {

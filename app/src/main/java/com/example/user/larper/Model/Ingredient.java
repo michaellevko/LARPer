@@ -9,6 +9,11 @@ public class Ingredient {
     private String name;
     private float price;
 
+    public Ingredient(String ingName, float ingPrice){
+        this.name = ingName;
+        this.price = ingPrice;
+    }
+
     public String getName() { return this.name; }
     public void setName(String name) { this.name = name; }
     public float getPrice() { return this.price; }

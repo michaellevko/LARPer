@@ -30,17 +30,14 @@ public class MainActivity extends Activity
         String acctDisplayName = this.getIntent().getExtras()
                 .getString(getResources().getString(R.string.account_display_name));
 
-/*
-        final ActionBar actionbar = getActionBar();
-        actionbar.setNavigationMode(actionbar.NAVIGATION_MODE_TABS);
-*/
-
         // Setting the navigation tabs
         final ActionBar actionbar = getActionBar();
         actionbar.setNavigationMode(actionbar.NAVIGATION_MODE_TABS);
         actionbar.setDisplayShowTitleEnabled(false);
         actionbar.setDisplayShowHomeEnabled(false);
+        actionbar.setDisplayHomeAsUpEnabled(true);
 
+        /*
         // Create tabs fragments and place in list for tab creation        
         final LinkedHashMap<String, Fragment> fragmentsHolder = new LinkedHashMap<>();
         fragmentsHolder.put(getResources()
@@ -95,7 +92,7 @@ public class MainActivity extends Activity
     public void onFragmentInteraction(Uri uri) {
 
     }
-/*
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -135,12 +132,7 @@ public class MainActivity extends Activity
     }
 
     private void goToFragment(Fragment frag, String tag) {
-        if(getFragmentManager().findFragmentByTag(tag) == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.main_fragment_container, frag, tag).commit();
-        } else {
-            getFragmentManager().beginTransaction().show(frag);
-        }
+        getFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment_container, frag, tag).commit();
     }
-*/
 }

@@ -15,8 +15,9 @@
     <string name="profile_attr_hitpoints">HitPoints</string>
     <string name="profile_attr_bio">Biography</string>
     <string name="profile_attr_skills">Skills</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="sex_male">Male</string>
+    <string-array name="Genders">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
 </resources>

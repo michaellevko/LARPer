@@ -9,16 +9,17 @@ import java.util.ArrayList;
 public class Profile {
 
     private String nickName;
-    private int age;
+    private String age;
     private String gender;
     private String scenarioClass;
     private String race;
-    private int hitPoints;
+    private String hitPoints;
     private ArrayList<Skill> skills;
     private String biography;
 
-    public Profile(String nickname, int age, String gender, String scenarioClass,
-                   String race, int hitpoints, ArrayList<Skill> skills, String biography) {
+    public Profile(String nickname, String age, String gender, String race,
+                   String scenarioClass, String biography, String hitpoints,
+                   ArrayList<Skill> skills) {
         this.nickName = nickname;
         this.age = age;
         this.gender = gender;
@@ -33,9 +34,9 @@ public class Profile {
 
     public void setNickName(String nickName) { this.nickName = nickName; }
 
-    public int getAge() { return this.age; }
+    public String getAge() { return this.age; }
 
-    public void setAge(int age) { this.age = age; }
+    public void setAge(String age) { this.age = age; }
 
     public String getGender() { return this.gender; }
 
@@ -51,9 +52,9 @@ public class Profile {
 
     public void setRace(String race) { this.race = race; }
 
-    public int getHitPoints() { return this.hitPoints; }
+    public String getHitPoints() { return this.hitPoints; }
 
-    public void setHitPoints(int hitPoints) {
+    public void setHitPoints(String hitPoints) {
         this.hitPoints = hitPoints;
     }
 

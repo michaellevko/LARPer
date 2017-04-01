@@ -9,6 +9,13 @@ public class Skill {
     private String name;
     private int level;
 
+    public Skill(){}
+
+    public Skill(String skillName) {
+        this.name = skillName;
+        this.level = 0;
+    }
+
     public String getName() { return name; }
 
     public void setName(String name) { this.name = name; }

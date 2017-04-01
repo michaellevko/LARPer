@@ -11,7 +11,7 @@ public class Model {
     private Model(){
     }
 
-    public static Model instance(){
+    public static Model getInstance(){
         return instance;
     }
 
@@ -27,11 +27,11 @@ public class Model {
         this.profile = new Profile(profile.getNickName(),
                                     profile.getAge(),
                                     profile.getGender(),
-                                    profile.getScenarioClass(),
                                     profile.getRace(),
+                                    profile.getScenarioClass(),
+                                    profile.getBiography(),
                                     profile.getHitPoints(),
-                                    profile.getSkills(),
-                                    profile.getBiography());
+                                    profile.getSkills());
     }
 
     public ArrayList<Profile> getLore() { return this.lore; }
