@@ -4,13 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.user.larper.MainActivity">
-
-    <TextView
-        android:layout_width="352dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/loginSuccessful"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="16dp" />
+    tools:context="com.example.user.larper.TestActivity">
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </android.support.constraint.ConstraintLayout>
