@@ -2,6 +2,7 @@
     <string name="app_name">LARPer</string>
     <string name="account_display_name">acctDisplayName</string>
     <string name="account_id">acctId</string>
+    <string name="init_profile_fragment">InitProfile</string>
     <string name="profile_fragment">Profile</string>
     <string name="map_fragment">Map</string>
     <string name="lore_fragment">Lore</string>

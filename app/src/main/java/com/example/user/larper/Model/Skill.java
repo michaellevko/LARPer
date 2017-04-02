@@ -7,22 +7,22 @@ package com.example.user.larper.Model;
 public class Skill {
 
     private String name;
-    private int level;
+    private String level;
 
-    public Skill(){}
+    public Skill(){ this.level = "0"; }
 
     public Skill(String skillName) {
         this.name = skillName;
-        this.level = 0;
+        this.level = "0";
     }
 
     public String getName() { return name; }
 
     public void setName(String name) { this.name = name; }
 
-    public int getLevel() { return level; }
+    public String getLevel() { return level; }
 
-    public void setLevel(int level) {
-        if (level >= 0) { this.level = level; }
+    public void setLevel(String level) {
+        if (Integer.parseInt(level) >= 0) { this.level = level; }
     }
 }

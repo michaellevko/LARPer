@@ -2,9 +2,7 @@ package com.example.user.larper;
 
 import android.app.ListFragment;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -26,7 +24,7 @@ import java.util.ArrayList;
 
 public class InitProfileFragment extends ListFragment {
 
-    private OnFragmentInteractionListener mListener;
+    private OnInitProfileFragmentListener mListener;
     private static final String ARG_PARAM1 = "acctName";
     private String acctName;
     ArrayList<Skill> skills = new ArrayList<>();
@@ -104,28 +102,22 @@ public class InitProfileFragment extends ListFragment {
                 Profile acctProfile = new Profile(nickName, age, gender, race,
                         scenarioClass, bio, hitpoints, skills);
                 Model.getInstance().setProfile(acctProfile);
+
+                mListener.profileInitialized();
             }
         });
 
         return view;
     }
 
-    /*
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-    */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnInitProfileFragmentListener) {
+            mListener = (OnInitProfileFragmentListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnInitProfileFragmentListener");
         }
     }
 
@@ -135,22 +127,11 @@ public class InitProfileFragment extends ListFragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public interface OnInitProfileFragmentListener {
+        void profileInitialized();
     }
 
-    public class SkillsAdapter extends BaseAdapter{
+    private class SkillsAdapter extends BaseAdapter{
 
         @Override
         public int getCount() { return skills.size(); }
@@ -180,7 +161,7 @@ public class InitProfileFragment extends ListFragment {
                 }
             });
             final EditText skillNameEt = ((EditText)convertView.findViewById(R.id.skill_name_et));
-            skillNameEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+ /*           skillNameEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     boolean val = false;
@@ -203,12 +184,15 @@ public class InitProfileFragment extends ListFragment {
                         }
 
                     }
-                    if (val) {skills.get(position).setName(skillNameEt.getText().toString());}
+                    if (val) {
+                        skills.get(position).setName(skillNameEt.getText().toString());
+                    }
                     return val;
                 }
-            });
+            });*/
             Log.d("TAG", "Position is: " + position);
-            skillNameEt.setText(skills.get(position).getName());
+            //skillNameEt.setText(skills.get(position).getName());
+            skills.get(position).setName(skillNameEt.getText().toString());
             return convertView;
         }
     }

@@ -3,21 +3,17 @@ package com.example.user.larper;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import com.example.user.larper.Model.Model;
 
 public class MainActivity extends Activity
-        implements InitProfileFragment.OnFragmentInteractionListener{
+        implements InitProfileFragment.OnInitProfileFragmentListener,
+                    ProfileFragment.OnProfileFragmentListener{
 
     String acctDisplayName;
     int acctId;
@@ -89,8 +85,19 @@ public class MainActivity extends Activity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void profileInitialized() {
+        this.goToFragment(new ProfileFragment(), getString(R.string.profile_fragment));
+    }
 
+    @Override
+    public void profileDeleted() {
+        /*TODO: CALL SQLITE TO DELETE ALL RELATED ITEMS*/
+        Model.getInstance().deleteProfile();
+        Model.getInstance().getBlueprints().clear();
+        Model.getInstance().getLore().clear();
+        /*TODO: DELETE MAPS*/
+        this.goToFragment(InitProfileFragment.newInstance(acctDisplayName),
+                getString(R.string.init_profile_fragment));
     }
 
     @Override
@@ -103,7 +110,7 @@ public class MainActivity extends Activity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.profile_tab: {
-                this.goToFragment(ProfileFragment.newInstance(),
+                this.goToFragment(new ProfileFragment(),
                         getString(R.string.profile_fragment));
                 break;
             }

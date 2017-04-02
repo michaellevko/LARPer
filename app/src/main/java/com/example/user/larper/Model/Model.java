@@ -23,6 +23,10 @@ public class Model {
 
     public Profile getProfile() { return profile; }
 
+    public void deleteProfile() {
+        this.profile = null;
+    }
+
     public void setProfile(Profile profile) {
         this.profile = new Profile(profile.getNickName(),
                                     profile.getAge(),
