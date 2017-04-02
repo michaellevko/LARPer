@@ -1,6 +1,7 @@
 package com.example.user.larper.Model;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by User on 4/1/2017.
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 
 public class Blueprint {
 
+    private String uuid;
     private String name;
     private ArrayList<Ingredient> ingredients;
     private float priceSum;
@@ -21,9 +23,12 @@ public class Blueprint {
         this.priceSum = this.calcPriceSum(ingredients);
         this.craftingTimeHours = craftingHours;
         this.craftingTimeMinutes = craftingMinutes;
+        this.uuid = UUID.randomUUID().toString();
     }
 
     public String getName() { return name; }
+
+    public String getUUID() {return this.uuid;}
 
     public void setName(String name) { this.name = name; }
 

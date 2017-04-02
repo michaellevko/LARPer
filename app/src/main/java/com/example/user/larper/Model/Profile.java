@@ -1,6 +1,7 @@
 package com.example.user.larper.Model;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by User on 4/1/2017.
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 
 public class Profile {
 
+    private String uuid;
     private String nickName;
     private String age;
     private String gender;
@@ -28,7 +30,9 @@ public class Profile {
         this.hitPoints = hitpoints;
         this.skills = new ArrayList<>(skills);
         this.biography = biography;
+        this.uuid = UUID.randomUUID().toString();
     }
+    public String getUuid() { return this.uuid; }
 
     public String getNickName() { return this.nickName; }
 
