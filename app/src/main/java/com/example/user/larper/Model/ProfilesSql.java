@@ -67,15 +67,9 @@ public class ProfilesSql {
              String skills = cursor.getString(cursor.getColumnIndex(SKILLS));
              String biography = cursor.getString(cursor.getColumnIndex(BIOGRAPHY));
 
-             profile = new Profile(nickName,
-                                   Integer.parseInt(age),
-                                   gender,
-                                   scenarioClass,
-                                   race,
-                                   Integer.parseInt(hitPoints),
+             profile = new Profile(nickName, age, gender, race, scenarioClass, biography, hitPoints,
                                    (ArrayList<Skill>)new Gson().fromJson(skills,
-                                           new TypeToken<ArrayList<Skill>>(){}.getType()),
-                                   biography);
+                                           new TypeToken<ArrayList<Skill>>(){}.getType()));
         }
 
         return profile;
@@ -101,15 +95,9 @@ public class ProfilesSql {
                 String skills = cursor.getString(cursor.getColumnIndex(SKILLS));
                 String biography = cursor.getString(cursor.getColumnIndex(BIOGRAPHY));
 
-                profile = new Profile(nickName,
-                        Integer.parseInt(age),
-                        gender,
-                        scenarioClass,
-                        race,
-                        Integer.parseInt(hitPoints),
+                profile = new Profile(nickName, age, gender, race, scenarioClass, biography, hitPoints,
                         (ArrayList<Skill>)new Gson().fromJson(skills,
-                                new TypeToken<ArrayList<Skill>>(){}.getType()),
-                        biography);
+                                new TypeToken<ArrayList<Skill>>(){}.getType()));
                 profiles.add(profile);
             }
             while (cursor.moveToNext());
