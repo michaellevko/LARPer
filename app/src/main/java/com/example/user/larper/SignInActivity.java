@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.user.larper.Model.ModelFirebaseRealtime;
+import com.example.user.larper.Model.StaticProfile;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -70,12 +72,27 @@ public class SignInActivity extends FragmentActivity implements
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
-            //mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
-            updateUI(true);
-            launchMainActivity(acct);
-
-        } else {
+            final GoogleSignInAccount acct = result.getSignInAccount();
+            // save account to firebase. overwrite does not matter. less lines of code.
+            ModelFirebaseRealtime.saveContact(
+                    new StaticProfile(acct.getDisplayName(), acct.getId()),
+                    new ModelFirebaseRealtime.FirebaseRealtimeListener() {
+                        @Override
+                        public void complete(boolean result) {
+                            if (result)
+                            {
+                                updateUI(true);
+                                launchMainActivity(acct);
+                            }
+                            else
+                            {
+                                updateUI(false);
+                            }
+                        }
+                    });
+        }
+        else
+        {
             // Signed out, show unauthenticated UI.
             updateUI(false);
         }
