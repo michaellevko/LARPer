@@ -23,7 +23,6 @@ public class BlueprintsSql {
     final static String INGERDIENTS = "ingredients";
     final static String PRICESUM = "priceSum";
     final static String CRAFTINGHOURS = "craftingTimeHours";
-    final static String CRAFTINGMINUTES = "craftingTimeMinutes";
 
     public static void addBlueprint(SQLiteDatabase writableDatabase, Blueprint blueprint) {
         ContentValues values = new ContentValues();
@@ -31,9 +30,8 @@ public class BlueprintsSql {
         values.put(UUID, blueprint.getUUID());
         values.put(NAME, blueprint.getName());
         values.put(INGERDIENTS, new Gson().toJson(blueprint.getIngredients()));
-        values.put(PRICESUM, blueprint.getPriceSum());
-        values.put(CRAFTINGHOURS, blueprint.getCraftingTimeHours());
-        values.put(CRAFTINGMINUTES, blueprint.getCraftingTimeMinutes());
+        values.put(PRICESUM, blueprint.getTotalCost());
+        values.put(CRAFTINGHOURS, blueprint.getCraftingTime());
 
         long rowId = writableDatabase.insert(TABLE_NAME, UUID, values);
         if (rowId <= 0) {
@@ -52,13 +50,11 @@ public class BlueprintsSql {
             String ingredients = cursor.getString(cursor.getColumnIndex(INGERDIENTS));
             String priceSum = cursor.getString(cursor.getColumnIndex(PRICESUM));
             String craftingTimeHours = cursor.getString(cursor.getColumnIndex(CRAFTINGHOURS));
-            String craftingTimeMinutes = cursor.getString(cursor.getColumnIndex(CRAFTINGMINUTES));
 
             blueprint = new Blueprint(name,
                     (ArrayList<Ingredient>)new Gson().fromJson(ingredients,
                             new TypeToken<ArrayList<Ingredient>>(){}.getType()),
-                    Integer.parseInt(craftingTimeHours),
-                    Integer.parseInt(craftingTimeMinutes));
+                    craftingTimeHours);
 
         }
 
@@ -80,13 +76,11 @@ public class BlueprintsSql {
                 String ingredients = cursor.getString(cursor.getColumnIndex(INGERDIENTS));
                 String priceSum = cursor.getString(cursor.getColumnIndex(PRICESUM));
                 String craftingTimeHours = cursor.getString(cursor.getColumnIndex(CRAFTINGHOURS));
-                String craftingTimeMinutes = cursor.getString(cursor.getColumnIndex(CRAFTINGMINUTES));
 
                 blueprint = new Blueprint(name,
                         (ArrayList<Ingredient>)new Gson().fromJson(ingredients,
                                 new TypeToken<ArrayList<Ingredient>>(){}.getType()),
-                        Integer.parseInt(craftingTimeHours),
-                        Integer.parseInt(craftingTimeMinutes));
+                        craftingTimeHours);
                 blueprints.add(blueprint);
             }
             while (cursor.moveToNext());
@@ -99,7 +93,7 @@ public class BlueprintsSql {
         sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_NAME +
                 " (" + UUID + " TEXT, " + NAME +
                 " TEXT, " + INGERDIENTS + " TEXT, " + PRICESUM +
-                " TEXT, "  + CRAFTINGHOURS + " TEXT, " + CRAFTINGMINUTES +
+                " TEXT, "  + CRAFTINGHOURS +
                 " TEXT)");
     }
 
@@ -108,7 +102,7 @@ public class BlueprintsSql {
     }
 
     private static String[] getColumns(){
-        String[] columns = {UUID,NAME,INGERDIENTS,PRICESUM,CRAFTINGHOURS,CRAFTINGMINUTES};
+        String[] columns = {UUID,NAME,INGERDIENTS,PRICESUM,CRAFTINGHOURS};
         return columns;
     }
 }

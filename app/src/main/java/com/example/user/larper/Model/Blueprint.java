@@ -12,17 +12,14 @@ public class Blueprint {
     private String uuid;
     private String name;
     private ArrayList<Ingredient> ingredients;
-    private float priceSum;
-    private int craftingTimeHours;
-    private int craftingTimeMinutes;
+    private String totalCost;
+    private String craftingTime;
 
-    public Blueprint(String name, ArrayList<Ingredient> ingredients,
-                     int craftingHours, int craftingMinutes) {
+    public Blueprint(String name, ArrayList<Ingredient> ingredients, String craftDurr) {
         this.name = name;
         this.ingredients = new ArrayList<>(ingredients);
-        this.priceSum = this.calcPriceSum(ingredients);
-        this.craftingTimeHours = craftingHours;
-        this.craftingTimeMinutes = craftingMinutes;
+        this.totalCost = this.calcPriceSum(ingredients);
+        this.craftingTime = craftDurr;
         this.uuid = UUID.randomUUID().toString();
     }
 
@@ -38,28 +35,20 @@ public class Blueprint {
         this.ingredients = ingredients;
     }
 
-    public float getPriceSum() { return priceSum; }
+    public String getTotalCost() { return this.totalCost; }
 
-    public void setPriceSum(float priceSum) { this.priceSum = priceSum; }
+    public void setTotalCost(String totalCost) { this.totalCost = totalCost; }
 
-    public int getCraftingTimeHours() { return craftingTimeHours; }
+    public String getCraftingTime() { return this.craftingTime; }
 
-    public void setCraftingTimeHours(int craftingTimeHours) {
-        this.craftingTimeHours = craftingTimeHours;
-    }
+    public void setCraftingTime(String craftingTime) { this.craftingTime = craftingTime; }
 
-    public int getCraftingTimeMinutes() { return craftingTimeMinutes; }
-
-    public void setCraftingTimeMinutes(int craftingTimeMinutes) {
-        this.craftingTimeMinutes = craftingTimeMinutes;
-    }
-
-    private float calcPriceSum(ArrayList<Ingredient> ingredients) {
-        float sum = 0;
+    private String calcPriceSum(ArrayList<Ingredient> ingredients) {
+        int sum = 0;
         for (Ingredient ing: ingredients) {
-            sum += ing.getPrice();
+            sum += Integer.parseInt(ing.getPrice());
         }
-        return sum;
+        return Integer.toString(sum);
     }
 
     @Override

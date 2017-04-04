@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.user.larper.Model.Model;
 import com.example.user.larper.Model.ModelFirebaseRealtime;
 import com.example.user.larper.Model.StaticProfile;
 import com.example.user.larper.Model.StaticProfilesSql;
@@ -82,7 +83,7 @@ public class SignInActivity extends FragmentActivity implements
                     new ModelFirebaseRealtime.FirebaseRealtimeListener() {
                         @Override
                         public void complete(boolean result) {
-                            if (result)
+                            if ((result) && (Model.getInstance().getProfile() != null))
                             {
                                 updateUI(true);
                                 launchMainActivity(acct);
@@ -90,6 +91,7 @@ public class SignInActivity extends FragmentActivity implements
                             else
                             {
                                 updateUI(false);
+                                launchInitProfile(acct);
                             }
                         }
                     });
@@ -115,6 +117,14 @@ public class SignInActivity extends FragmentActivity implements
 
     private void launchMainActivity(GoogleSignInAccount acct){
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(getApplicationContext().getResources().getString(R.string.account_display_name), acct.getDisplayName());
+        intent.putExtra(getApplicationContext().getResources().getString(R.string.account_id), acct.getId());
+        startActivity(intent);
+        this.finish();
+    }
+
+    private void launchInitProfile(GoogleSignInAccount acct) {
+        Intent intent = new Intent(this, InitProfileActivity.class);
         intent.putExtra(getApplicationContext().getResources().getString(R.string.account_display_name), acct.getDisplayName());
         intent.putExtra(getApplicationContext().getResources().getString(R.string.account_id), acct.getId());
         startActivity(intent);

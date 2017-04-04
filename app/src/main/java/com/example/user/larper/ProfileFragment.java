@@ -47,7 +47,10 @@ public class ProfileFragment extends ListFragment {
         scenarioClass = ((EditText)view.findViewById(R.id.profile_class_et));
         bio = ((EditText)view.findViewById(R.id.profile_bio_et));
         hitPoints = ((EditText)view.findViewById(R.id.profile_hitpoints_et));
-        skills = Model.getInstance().getProfile().getSkills();
+
+        if (Model.getInstance().getProfile() != null) {
+            skills = Model.getInstance().getProfile().getSkills();
+        }
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.gender_spinner_layout, R.id.gender_spinner_item_tv,
