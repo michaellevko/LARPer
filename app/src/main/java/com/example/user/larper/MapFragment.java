@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.user.larper.Model.ModelFilesystem;
 import com.example.user.larper.Model.ModelFirebase;
@@ -38,6 +39,7 @@ public class MapFragment extends Fragment {
     private boolean isLoaded;
     private Bitmap currBitmap;
     private File currBitmapFile;
+    final static String SUFFIX = "_objective.jpeg";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,29 +94,57 @@ public class MapFragment extends Fragment {
         final Button button_save = (Button) view.findViewById(R.id.button5);
         button_save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                saveImage();
+                if(saveImage())
+                {
+                    Toast.makeText(
+                            activity.getApplicationContext(),
+                            "Successfully saved objective",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(
+                            activity.getApplicationContext(),
+                            "Failed saving objective",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         // set listener for share button
-        /*final Button button_share = (Button) view.findViewById(R.id.button8);
+        final Button button_share = (Button) view.findViewById(R.id.button8);
         button_share.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                ModelFirebase.saveFile(currBitmapFile, new ModelFirebase.FirebaseListener() {
-                    @Override
-                    public void complete(boolean result) {
-                        if(result)
-                        {
-                            //toast
-                        }
-                        else
-                        {
-                            //toast
-                        }
+                if(isLoaded)
+                {
+                    if (saveImage())
+                    {
+                        File save_file = new File(currBitmapFile.getParent()
+                                + "/" + FilenameUtils.removeExtension(currBitmapFile.getName())
+                                + SUFFIX);
+                        ModelFirebase.saveFile(save_file, new ModelFirebase.FirebaseListener() {
+                            @Override
+                            public void complete(boolean result) {
+                                if (result) {
+                                    Toast.makeText(
+                                            activity.getApplicationContext(),
+                                            "Successfully shared objective",
+                                            Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(
+                                            activity.getApplicationContext(),
+                                            "Failed sharing objective",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        }, new StaticProfile("kaki", "pipi"));
                     }
-                }, new StaticProfile("kaki", "pipi"));
+                }
             }
-        });*/
+
+        });
+
 
         return view;
     }
@@ -150,8 +180,8 @@ public class MapFragment extends Fragment {
     }
 
     public boolean saveImage(){
-        final String SUFFIX = "_objective.jpeg";
-        if (this.isLoaded) {
+        if (this.isLoaded)
+        {
             String save_path = this.currBitmapFile.getParent()
                     + "/" + FilenameUtils.removeExtension(this.currBitmapFile.getName())
                         + SUFFIX;
