@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="android-file-chooser-1.2">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/5426b19ea0b6286b3c0baffb2676dcea96fbf52b/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/5426b19ea0b6286b3c0baffb2676dcea96fbf52b/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/ir.sohreco.androidfilechooser/android-file-chooser/1.2/f35ab447a7ee0edf669dd118168b0ab4b8db5c7c/android-file-chooser-1.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

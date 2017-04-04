@@ -1,12 +1,16 @@
 package com.example.user.larper.Model;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import java.io.File;
+import java.util.UUID;
 
 /**
  * Created by event on 01/04/2017.
@@ -20,12 +24,17 @@ final public class ModelFirebase {
         void complete(boolean result);
     }
 
-    public static void saveFile(File file, final FirebaseListener listener){
+    public static void saveFile(File file, final FirebaseListener listener, StaticProfile profile){
         FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference().child(UUID.randomUUID().toString());
 
-        StorageReference storageRef = storage.getReference().child(file.getName());
+        // Create file metadata
+        StorageMetadata metadata = new StorageMetadata.Builder()
+                .setCustomMetadata("shareTo", profile.getNickname())
+                .setCustomMetadata("isCollected", "false")
+                .build();
 
-        UploadTask uploadTask = storageRef.putFile(Uri.fromFile(file));
+        UploadTask uploadTask = storageRef.putFile(Uri.fromFile(file), metadata);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(Exception exception) {
