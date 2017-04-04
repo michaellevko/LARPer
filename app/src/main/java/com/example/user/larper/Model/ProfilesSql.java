@@ -1,17 +1,11 @@
 package com.example.user.larper.Model;
 
-import com.example.user.larper.Model.Skill;
 import android.content.ContentValues;
-import android.database.AbstractWindowedCursor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 

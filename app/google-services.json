@@ -1,7 +1,9 @@
 {
   "project_info": {
     "project_number": "435277285696",
-    "project_id": "firebase-larper"
+    "firebase_url": "https://fir-larper.firebaseio.com",
+    "project_id": "firebase-larper",
+    "storage_bucket": "firebase-larper.appspot.com"
   },
   "client": [
     {
@@ -12,6 +14,10 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "435277285696-s7ef998gstsc7tg4l6jp1032g2pre3l7.apps.googleusercontent.com",
+          "client_type": 3
+        },
         {
           "client_id": "435277285696-ues7lnjark75888issarogfds7dsd0u8.apps.googleusercontent.com",
           "client_type": 1,
@@ -35,11 +41,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "435277285696-s7ef998gstsc7tg4l6jp1032g2pre3l7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     },
@@ -51,6 +62,18 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "435277285696-se6l1ht6lh41paoom7jqqr9lpc1eh8oa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.user.larper",
+            "certificate_hash": "a80f3596d4797e66bee007fdfb177c6012afb353"
+          }
+        },
+        {
+          "client_id": "435277285696-s7ef998gstsc7tg4l6jp1032g2pre3l7.apps.googleusercontent.com",
+          "client_type": 3
+        },
         {
           "client_id": "435277285696-ufsq8inh8uunt8ter7cmfh16g4m73vgd.apps.googleusercontent.com",
           "client_type": 1,
@@ -74,11 +97,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "435277285696-s7ef998gstsc7tg4l6jp1032g2pre3l7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }

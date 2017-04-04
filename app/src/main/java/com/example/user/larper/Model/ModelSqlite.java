@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.user.larper.LARPer;
 
 import java.util.List;
 
@@ -20,20 +19,20 @@ public class ModelSqlite {
     private int version = 1;
     private static ModelSqlite modelSql;
 
-    public ModelSqlite(){
+    public ModelSqlite(Context context){
         try {
-            profilesHelper = new ProfilesHelper(LARPer.getAppContext());
-            blueprintsHelper = new BlueprintsHelper(LARPer.getAppContext());
-            staticProfileHelper = new StaticProfilesHelper(LARPer.getAppContext());
+            profilesHelper = new ProfilesHelper(context);
+            blueprintsHelper = new BlueprintsHelper(context);
+            staticProfileHelper = new StaticProfilesHelper(context);
         }
         catch(Exception e){
             Log.d("exception", "exception while trying to install the local db " + e.getMessage());
         }
     }
 
-    public static ModelSqlite getInstance(){
+    public static ModelSqlite getInstance(Context context){
         if(modelSql == null)
-            modelSql = new ModelSqlite();
+            modelSql = new ModelSqlite(context);
 
         return modelSql;
     }
