@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,6 +57,18 @@ public class ModelSqlite {
         return ProfilesSql.GetAllProfiles(profilesHelper.getReadableDatabase());
     }
 
+    public void saveContact(StaticProfile contact)
+    {
+        StaticProfilesSql.writeContact(
+                staticProfileHelper.getWritableDatabase(),
+                contact);
+    }
+
+    public ArrayList<StaticProfile> getOwnerContacts()
+    {
+        return StaticProfilesSql.getContactsByOwner(
+                   staticProfileHelper.getReadableDatabase());
+    }
 
     class ProfilesHelper extends SQLiteOpenHelper{
 

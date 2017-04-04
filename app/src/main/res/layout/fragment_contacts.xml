@@ -34,13 +34,13 @@
             android:id="@+id/editText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Search.."
-            app:layout_constraintLeft_toRightOf="@+id/button6"
+            android:layout_marginLeft="14dp"
             android:layout_marginStart="13dp"
-            tools:layout_editor_absoluteY="16dp"
-            android:layout_marginLeft="14dp" />
+            android:ems="10"
+            android:hint="Search.."
+            android:inputType="textPersonName"
+            app:layout_constraintLeft_toRightOf="@+id/button6"
+            tools:layout_editor_absoluteY="16dp" />
 
         <TextView
             android:id="@+id/textView"
@@ -50,8 +50,10 @@
             android:layout_centerVertical="true"
             android:text="Contacts"
             android:textColor="@color/colorBrightGreen"
-            tools:layout_editor_absoluteX="268dp"
-            tools:layout_editor_absoluteY="16dp" />
+            android:layout_marginLeft="323dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp" />
 
     </android.support.constraint.ConstraintLayout>
 
