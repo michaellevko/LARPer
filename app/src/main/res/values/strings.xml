@@ -8,6 +8,7 @@
     <string name="lore_fragment">Lore</string>
     <string name="blueprints_fragment">Blueprints</string>
     <string name="contacts_fragment">Contacts</string>
+    <string name="new_blueprint_fragment">NewBlueprint</string>
     <string name="profile_attr_nickname">Nickname</string>
     <string name="profile_attr_age">Age</string>
     <string name="profile_attr_gender">Gender</string>
@@ -16,9 +17,15 @@
     <string name="profile_attr_hitpoints">HitPoints</string>
     <string name="profile_attr_bio">Biography</string>
     <string name="profile_attr_skills">Skills</string>
+    <string name="new_item_btn">New</string>
+    <string name="edit_item_btn">Edit</string>
+    <string name="del_item_btn">Delete</string>
     <string-array name="Genders">
         <item>Male</item>
         <item>Female</item>
         <item>Other</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

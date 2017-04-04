@@ -3,17 +3,18 @@ package com.example.user.larper;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.user.larper.Model.Model;
 
 public class MainActivity extends Activity
-        implements InitProfileFragment.OnInitProfileFragmentListener,
-                    ProfileFragment.OnProfileFragmentListener{
+        implements ProfileFragment.OnProfileFragmentListener,
+        BlueprintsFragment.OnBlueprintFragmentListener,
+        NewBlueprintFragment.OnNewBlueprintFragmentListener{
 
     String acctDisplayName;
     int acctId;
@@ -23,8 +24,7 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d("TAG", "MainActivity");
-        String acctDisplayName = this.getIntent().getExtras()
-                .getString(getResources().getString(R.string.account_display_name));
+        //String acctDisplayName = this.getIntent().getExtras().getString(getResources().getString(R.string.account_display_name));
 
         // Setting the navigation tabs
         final ActionBar actionbar = getActionBar();
@@ -33,71 +33,14 @@ public class MainActivity extends Activity
         actionbar.setDisplayShowHomeEnabled(false);
         actionbar.setDisplayHomeAsUpEnabled(true);
 
-        /*
-        // Create tabs fragments and place in list for tab creation        
-        final LinkedHashMap<String, Fragment> fragmentsHolder = new LinkedHashMap<>();
-        fragmentsHolder.put(getResources()
-                .getString(R.string.profile_fragment), ProfileFragment.newInstance());
-        fragmentsHolder.put(getResources()
-                .getString(R.string.map_fragment), new MapFragment());
-        fragmentsHolder.put(getResources()
-                .getString(R.string.lore_fragment), new LoreFragment());
-        fragmentsHolder.put(getResources()
-                .getString(R.string.blueprints_fragment), new BlueprintsFragment());
-        fragmentsHolder.put(getResources()
-                .getString(R.string.contacts_fragment), new ContactsFragment());
-
-
-        // Create a tab listener that is called when the user changes tabs.
-        ActionBar.TabListener tabListener = new ActionBar.TabListener() {
-            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-                String fragmentTag = tab.getText().toString();
-                Fragment fragment = fragmentsHolder.get(fragmentTag);
-                // If fragment isnt in backstack, add it, otherwise, show it
-                if (getFragmentManager().findFragmentByTag(fragmentTag) == null){
-                    ft.add(R.id.main_fragment_container , fragment, fragmentTag);
-                } else {
-                    ft.show(fragment);
-                }
-            }
-
-            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-                ft.hide(fragmentsHolder.get(tab.getText().toString()));
-            }
-
-            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-                // probably ignore this event
-            }
-        };
-
-        // Tab creation
-        for (Map.Entry<String, Fragment> entry : fragmentsHolder.entrySet()) {
-            actionbar.addTab(actionbar.newTab().setText(entry.getKey()).setTabListener(tabListener));
-        }
 
         /* Check Firebase for user profile
          * If profile doesnt exist, call InitProfileFragment
          * Else, pull user profile and call HomeTabFragment*/
+
         getFragmentManager().beginTransaction()
-                .add(R.id.main_fragment_container, InitProfileFragment.newInstance(acctDisplayName))
+                .add(R.id.main_fragment_container, new ProfileFragment())
                 .commit();
-
-    }
-
-    @Override
-    public void profileInitialized() {
-        this.goToFragment(new ProfileFragment(), getString(R.string.profile_fragment));
-    }
-
-    @Override
-    public void profileDeleted() {
-        /*TODO: CALL SQLITE TO DELETE ALL RELATED ITEMS*/
-        Model.getInstance().deleteProfile();
-        Model.getInstance().getBlueprints().clear();
-        Model.getInstance().getLore().clear();
-        /*TODO: DELETE MAPS*/
-        this.goToFragment(InitProfileFragment.newInstance(acctDisplayName),
-                getString(R.string.init_profile_fragment));
     }
 
     @Override
@@ -139,7 +82,37 @@ public class MainActivity extends Activity
     }
 
     private void goToFragment(Fragment frag, String tag) {
-        getFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment_container, frag, tag).commit();
+        if (getFragmentManager().findFragmentByTag(tag) == null) {
+            getFragmentManager().beginTransaction()
+                        .replace(R.id.main_fragment_container, frag, tag).commit();
+        }
+    }
+
+    @Override
+    public void profileDeleted() {
+        /*TODO: CALL SQLITE TO DELETE ALL RELATED ITEMS*/
+        Model.getInstance().deleteProfile();
+        Model.getInstance().getBlueprints().clear();
+        Model.getInstance().getLore().clear();
+        /*TODO: DELETE MAPS*/
+        gotoInitProfileActivity();
+    }
+
+    private void gotoInitProfileActivity(){
+        Intent intent = new Intent(this, InitProfileActivity.class);
+        intent.putExtra(getApplicationContext().getResources()
+                .getString(R.string.account_display_name), acctDisplayName);
+        startActivity(intent);
+        this.finish();
+    }
+
+    @Override
+    public void gotoNewBlueprintInterface() {
+        this.goToFragment(new NewBlueprintFragment(), getString(R.string.new_blueprint_fragment));
+    }
+
+    @Override
+    public void gotoBlueprintInterface() {
+        this.goToFragment(new BlueprintsFragment(), getString(R.string.blueprints_fragment));
     }
 }
