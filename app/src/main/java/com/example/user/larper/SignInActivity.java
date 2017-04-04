@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.user.larper.Model.ModelFirebaseRealtime;
 import com.example.user.larper.Model.StaticProfile;
+import com.example.user.larper.Model.StaticProfilesSql;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -73,9 +74,11 @@ public class SignInActivity extends FragmentActivity implements
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             final GoogleSignInAccount acct = result.getSignInAccount();
+            // update owner
+            StaticProfilesSql.curr_owner = new StaticProfile(acct.getDisplayName(), acct.getId());
             // save account to firebase. overwrite does not matter. less lines of code.
             ModelFirebaseRealtime.saveContact(
-                    new StaticProfile(acct.getDisplayName(), acct.getId()),
+                    StaticProfilesSql.curr_owner,
                     new ModelFirebaseRealtime.FirebaseRealtimeListener() {
                         @Override
                         public void complete(boolean result) {
