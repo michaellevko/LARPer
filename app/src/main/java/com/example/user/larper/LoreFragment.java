@@ -3,6 +3,7 @@ package com.example.user.larper;
 import android.app.ListFragment;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ScaleDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -96,9 +97,12 @@ public class LoreFragment extends ListFragment {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.lore_row_details, null);
                 ImageButton loreShare = (ImageButton)convertView.findViewById(R.id.lore_share_btn);
-                Drawable shareImg = getResources().getDrawable(R.drawable.share_icon);
-                shareImg.setBounds(0, 0, 40, 40);
+                /*Drawable shareImg = getResources().getDrawable(R.drawable.share_icon);
+                shareImg.setBounds(0, 0, (int)(shareImg.getIntrinsicWidth()*0.1),
+                        (int)(shareImg.getIntrinsicHeight()*0.1));
+                ScaleDrawable sd = new ScaleDrawable(shareImg, 0, )
                 loreShare.setImageDrawable(shareImg);
+                */
                 loreShare.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

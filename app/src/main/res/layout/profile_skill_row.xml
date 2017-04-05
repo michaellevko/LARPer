@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,34 +7,34 @@
 
     <EditText
         android:id="@+id/skill_name_et"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
         android:inputType="textPersonName" />
-
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="2" />
 
     <Button
         android:id="@+id/skill_add_btn"
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:text="+" />
+        tools:text="+"
+        android:layout_alignBaseline="@+id/skill_name_et"
+        android:layout_alignBottom="@+id/skill_name_et"
+        android:layout_toEndOf="@+id/skill_name_et"
+        android:layout_marginStart="32dp" />
 
     <EditText
         android:id="@+id/skill_level_et"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:inputType="number" />
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:inputType="number"
+        android:layout_alignTop="@+id/skill_add_btn"
+        android:layout_toEndOf="@+id/skill_add_btn" />
 
     <Button
         android:id="@+id/skill_sub_btn"
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:text="-" />
-</LinearLayout>
+        tools:text="-"
+        android:layout_marginStart="50dp"
+        android:layout_alignTop="@+id/skill_level_et"
+        android:layout_toEndOf="@+id/skill_add_btn" />
+</RelativeLayout>

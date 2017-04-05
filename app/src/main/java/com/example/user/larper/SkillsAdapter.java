@@ -74,8 +74,9 @@ public class SkillsAdapter extends ArrayAdapter<Skill> {
         vh.skillName.setText(s.getName());
         vh.skillLevel.setText(s.getLevel());
 
-        v.findViewById(R.id.skill_add_btn).setVisibility(View.GONE);
-        v.findViewById(R.id.skill_level_et).setVisibility(View.GONE);
+        v.findViewById(R.id.skill_add_btn).setVisibility(View.INVISIBLE);
+        v.findViewById(R.id.skill_level_et).setVisibility(View.INVISIBLE);
+
         Button delSkillBtn = ((Button)v.findViewById(R.id.skill_sub_btn));
         delSkillBtn.setOnClickListener(new View.OnClickListener() {
             @Override
