@@ -7,14 +7,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,11 +88,11 @@ public class MapFragment extends Fragment {
         final Button button = (Button) view.findViewById(R.id.button2);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int permissionCheck = ContextCompat.checkSelfPermission(factivity,
+                int permissionCheck = factivity.getBaseContext().checkSelfPermission(
                         android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
                 if(permissionCheck != PackageManager.PERMISSION_GRANTED)
                 {
-                    ActivityCompat.requestPermissions(factivity,
+                    factivity.requestPermissions(
                             new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
                             FileChooser.MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE);
                 }

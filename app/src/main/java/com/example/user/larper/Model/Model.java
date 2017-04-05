@@ -45,7 +45,7 @@ public class Model {
     public boolean removeProfileFromLore(Profile profile) { return this.lore.remove(profile);}
 
     public ArrayList<Blueprint> getBlueprints() { return this.blueprints; }
-
+    public void setBlueprints(ArrayList<Blueprint> blueprints) {this.blueprints = blueprints;}
     public void addBlueprint(Blueprint bp) { this.blueprints.add(bp); }
 
     public boolean removeBlueprint(Blueprint bp) { return this.blueprints.remove(bp); }

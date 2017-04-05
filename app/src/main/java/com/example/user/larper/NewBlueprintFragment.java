@@ -23,6 +23,8 @@ import android.widget.Toast;
 import com.example.user.larper.Model.Blueprint;
 import com.example.user.larper.Model.Ingredient;
 import com.example.user.larper.Model.Model;
+import com.example.user.larper.Model.ModelSqlite;
+import com.example.user.larper.Model.StaticProfilesSql;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -55,8 +57,15 @@ public class NewBlueprintFragment extends Fragment {
                 if (ingList.size() > 0) {
                     String craftTime = bpCraftDurH.getText().toString() +
                             "h:" + bpCraftDurM.getText().toString() + "m";
-                    Model.getInstance().addBlueprint(new Blueprint(bpName.getText().toString(),
-                            ingList, craftTime));
+                    Blueprint blueprintToSave = new Blueprint(bpName.getText().toString(),
+                            ingList, craftTime);
+
+                    // save in memory
+                    Model.getInstance().addBlueprint(blueprintToSave);
+
+                    // save in sql
+                    ModelSqlite sql = new ModelSqlite(getContext());
+                    sql.saveBlueprint(blueprintToSave, StaticProfilesSql.curr_owner.toString());
 
                     Toast.makeText(getActivity(), "Blueprint Saved.", Toast.LENGTH_SHORT);
 
