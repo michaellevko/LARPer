@@ -1,5 +1,6 @@
 package com.example.user.larper;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.user.larper.Model.ModelFirebase;
 import com.example.user.larper.Model.ModelFirebaseRealtime;
@@ -23,14 +25,18 @@ import java.util.ArrayList;
 
 public class ContactsFragment extends Fragment {
 
+    Activity activity;
     ArrayList<StaticProfile> contacts;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_contacts, container, false);
+        activity = this.getActivity();
+        contacts = this.getOwnerContacts();
 
-        contacts = new ArrayList<StaticProfile>();
+        if(contacts == null)
+            contacts = new ArrayList<StaticProfile>();
 
         final ArrayAdapter adapter = new ArrayAdapter(
                     this.getActivity().getBaseContext(),
@@ -57,6 +63,11 @@ public class ContactsFragment extends Fragment {
                         {
                             contacts.add(contacts.size(), profile);
                             adapter.notifyDataSetChanged();
+                            saveContactToSql(profile);
+                            Toast.makeText(
+                                    activity.getBaseContext(),
+                                    "Successfully saved contact",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -67,8 +78,15 @@ public class ContactsFragment extends Fragment {
             return view;
     }
 
-    public void saveContactToSql(StaticProfile profile)
+    public void saveContactToSql(StaticProfile contact)
     {
-        //StaticProfilesSql.writeContact();
+        ModelSqlite sql = new ModelSqlite(this.getContext());
+        sql.saveContact(contact);
+    }
+
+    public ArrayList<StaticProfile> getOwnerContacts()
+    {
+        ModelSqlite sql = new ModelSqlite(this.getContext());
+        return sql.getOwnerContacts();
     }
 }
