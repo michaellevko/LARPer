@@ -39,7 +39,7 @@ public class Model {
     }
 
     public ArrayList<Profile> getLore() { return this.lore; }
-
+    public void setLore(ArrayList<Profile> lore) {this.lore = lore;}
     public void addProfileToLore(Profile profile) { this.lore.add(profile); }
 
     public boolean removeProfileFromLore(Profile profile) { return this.lore.remove(profile);}

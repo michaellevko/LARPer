@@ -26,6 +26,7 @@ import com.example.user.larper.Model.ModelFirebase;
 import com.example.user.larper.Model.ModelFirebaseRealtime;
 import com.example.user.larper.Model.ModelSqlite;
 import com.example.user.larper.Model.StaticProfile;
+import com.example.user.larper.Model.StaticProfilesSql;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -61,15 +62,17 @@ public class BlueprintsFragment extends ListFragment {
 
         // init contact spinner adapter
         ArrayList<StaticProfile> contacts = new ArrayList<StaticProfile>();
-        final ArrayAdapter adapter = new ArrayAdapter(
+        ModelSqlite sql = new ModelSqlite(this.getContext());
+        contacts = sql.getOwnerContacts();
+        final ArrayAdapter Arrayadapter = new ArrayAdapter(
                 getActivity().getBaseContext(),
                 android.R.layout.simple_spinner_item,
                 contacts);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Arrayadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // define spinner
         spinner = ((Spinner) view.findViewById(R.id.spinner2));
-        spinner.setAdapter(adapter);
+        spinner.setAdapter(Arrayadapter);
         spinner.setVisibility(View.INVISIBLE);
 
         return view;
@@ -140,18 +143,28 @@ public class BlueprintsFragment extends ListFragment {
             bpShare.setImageDrawable(shareImg);*/
 
             // handle spinner contact selection
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onNothingSelected(AdapterView<?> parent)
-                {
-                    spinner.setVisibility(View.VISIBLE);
-                }
+            if (spinner.getOnItemClickListener() == null) {
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    boolean first = true;
 
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
-                    shareBlueprint(position);
-                }
-            });
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        spinner.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                        if (!first)
+                        {
+                            shareBlueprint(position);
+                        }
+                        else
+                        {
+                            first = false;
+                        }
+                    }
+                });
+            }
 
             bpShare.setOnClickListener(new View.OnClickListener() {
                 @Override
