@@ -59,7 +59,9 @@ public class InitProfileActivity extends ListActivity {
             public void onClick(View v) {
                 //skills.add(new Skill());
                 //lvAdapter.notifyDataSetChanged();
-                lvAdapter.add(new Skill());
+                Skill s = new Skill();
+                //lvAdapter.skills.add(s);
+                lvAdapter.add(s);
             }
         });
 
@@ -111,6 +113,7 @@ public class InitProfileActivity extends ListActivity {
         }
 
         class ViewHolder{
+            CustomTextWatcher testWatch;
             protected EditText skillName;
             protected EditText skillLevel;
         }
@@ -132,8 +135,8 @@ public class InitProfileActivity extends ListActivity {
                 final ViewHolder vh = new ViewHolder();
                 vh.skillName = (EditText)v.findViewById(R.id.skill_name_et);
                 vh.skillLevel = (EditText)v.findViewById(R.id.skill_level_et);
-
-                vh.skillName.addTextChangedListener(new CustomTextWatcher(vh.skillName, s));
+                vh.testWatch =  new CustomTextWatcher(vh.skillName, s);
+                vh.skillName.addTextChangedListener(vh.testWatch);
 
                 v.setTag(vh);
                 vh.skillName.setTag(s);
@@ -142,6 +145,8 @@ public class InitProfileActivity extends ListActivity {
                 ViewHolder vh = (ViewHolder)v.getTag();
                 vh.skillName.setTag(s);
                 vh.skillLevel.setTag(s);
+                vh.testWatch.s = s;
+                //vh.skillName.addTextChangedListener(new CustomTextWatcher(vh.skillName, s));
             }
 
             ViewHolder vh = (ViewHolder)v.getTag();
@@ -193,7 +198,9 @@ public class InitProfileActivity extends ListActivity {
 
             if (text != null && text.length() > 0) {
                 if (this.skillName.getId() == R.id.skill_name_et) {
+                    Log.d("TAG","brfor " + s.getName());
                     this.s.setName(text);
+                    Log.d("TAG","after " + s.getName());
                 }
             }
         }
