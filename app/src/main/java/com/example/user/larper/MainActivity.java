@@ -15,7 +15,8 @@ public class MainActivity extends Activity
         implements ProfileFragment.OnProfileFragmentListener,
         BlueprintsFragment.OnBlueprintFragmentListener,
         NewBlueprintFragment.OnNewBlueprintFragmentListener,
-        LoreFragment.OnLoreFragmentListener{
+        LoreFragment.OnLoreFragmentListener,
+        NewLoreFragment.OnNewLoreFragmentListener{
 
     String acctDisplayName;
     int acctId;
@@ -119,6 +120,11 @@ public class MainActivity extends Activity
 
     @Override
     public void gotoNewLoreInterface() {
-        this.goToFragment(new NewLoreFragment(), getString(R.string.lore_fragment));
+        this.goToFragment(new NewLoreFragment(), getString(R.string.new_lore_fragment));
+    }
+
+    @Override
+    public void gotoLoreInterface() {
+        this.goToFragment(new LoreFragment(), getString(R.string.lore_fragment));
     }
 }

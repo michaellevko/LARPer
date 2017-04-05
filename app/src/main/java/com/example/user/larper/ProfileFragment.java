@@ -39,6 +39,8 @@ public class ProfileFragment extends ListFragment {
         Log.d("ProfileFragment", "OnCreateView");
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        ((Button)view.findViewById(R.id.profile_add_skill_btn)).setVisibility(View.INVISIBLE);
+
         // Get view objects
         nickName = ((EditText)view.findViewById(R.id.profile_nickname_et));
         age = ((EditText)view.findViewById(R.id.profile_age_et));
@@ -117,6 +119,8 @@ public class ProfileFragment extends ListFragment {
             }
 
             final EditText skillLevel = ((EditText)convertView.findViewById(R.id.skill_level_et));
+            skillLevel.setFocusable(false);
+            skillLevel.setClickable(false);
             Button addSkillBtn = ((Button)convertView.findViewById(R.id.skill_add_btn));
             addSkillBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -9,6 +9,7 @@
     <string name="blueprints_fragment">Blueprints</string>
     <string name="contacts_fragment">Contacts</string>
     <string name="new_blueprint_fragment">NewBlueprint</string>
+    <string name="new_lore_fragment">NewLore</string>
     <string name="profile_attr_nickname">Nickname</string>
     <string name="profile_attr_age">Age</string>
     <string name="profile_attr_gender">Gender</string>
