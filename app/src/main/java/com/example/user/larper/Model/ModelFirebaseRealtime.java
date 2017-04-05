@@ -90,7 +90,9 @@ final public class ModelFirebaseRealtime {
                     for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
                     {
                         blueprints.add(new Blueprint(childSnapshot.getValue(BlueprintAndOwner.class)));
+                        childSnapshot.getRef().removeValue();
                     }
+                    // delete after retrieving
                     listener.complete(blueprints);
                 }
 

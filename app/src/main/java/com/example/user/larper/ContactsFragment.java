@@ -1,8 +1,10 @@
 package com.example.user.larper;
 
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +16,14 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.user.larper.Model.Blueprint;
 import com.example.user.larper.Model.ModelFirebase;
 import com.example.user.larper.Model.ModelFirebaseRealtime;
 import com.example.user.larper.Model.ModelSqlite;
 import com.example.user.larper.Model.StaticProfile;
 import com.example.user.larper.Model.StaticProfilesSql;
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -42,7 +46,6 @@ public class ContactsFragment extends Fragment {
                     this.getActivity().getBaseContext(),
                     android.R.layout.simple_list_item_1,
                     contacts);
-
 
         ListView listView = ((ListView)view.findViewById(R.id.listView1));
         listView.setAdapter(adapter);
@@ -75,7 +78,79 @@ public class ContactsFragment extends Fragment {
             }
         });
 
+        // set listener for check data button
+        final Button button_shared_data = (Button) view.findViewById(R.id.button7);
+        button_shared_data.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // load image data
+                loadObjectivesData();
+                // load blueprint data
+                loadBlueprintsData();
+            }
+        });
+
             return view;
+    }
+
+    private void loadBlueprintsData()
+    {
+        // load blueprint data
+        ModelFirebaseRealtime.findBlueprintsByOwner(
+                StaticProfilesSql.curr_owner.toString(),
+                new ModelFirebaseRealtime.FirebaseReadBlueprintsListener() {
+                    @Override
+                    public void complete(ArrayList<Blueprint> blueprints)
+                    {
+                        if(blueprints.size() > 0)
+                        {
+                            ModelSqlite sql = new ModelSqlite(getContext());
+                            for (Blueprint blueprint : blueprints)
+                            {
+                                sql.saveBlueprint(
+                                        blueprint,
+                                        StaticProfilesSql.curr_owner.toString());
+                            }
+                            Toast.makeText(
+                                    activity.getBaseContext(),
+                                    "Successfully saved new blueprints",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            Toast.makeText(
+                                    activity.getBaseContext(),
+                                    "No blueprints to load",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void loadObjectivesData()
+    {
+        final ArrayList<File> result = new ArrayList<File>();
+        ModelFirebase.loadFileByOwner(StaticProfilesSql.curr_owner.toString(),
+                       new ModelFirebase.FirebaseLoadListener()
+                       {
+                           @Override
+                           public void complete(File file)
+                           {
+                              if (file != null)
+                              {
+                                  Toast.makeText(
+                                          activity.getBaseContext(),
+                                          "Successfully saved a new objective",
+                                          Toast.LENGTH_SHORT).show();
+                              }
+                              else
+                              {
+                                  Toast.makeText(
+                                          activity.getBaseContext(),
+                                          "No objective to load",
+                                          Toast.LENGTH_SHORT).show();
+                              }
+                           }
+                       });
     }
 
     public void saveContactToSql(StaticProfile contact)

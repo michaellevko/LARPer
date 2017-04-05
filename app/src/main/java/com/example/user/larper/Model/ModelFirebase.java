@@ -1,5 +1,6 @@
 package com.example.user.larper.Model;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,17 +25,15 @@ final public class ModelFirebase {
         void complete(boolean result);
     }
 
+    public interface FirebaseLoadListener{
+        void complete(File file);
+    }
+
     public static void saveFile(File file, final FirebaseListener listener, StaticProfile profile){
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference().child(UUID.randomUUID().toString());
+        StorageReference storageRef = storage.getReference().child(profile.getNickname());
 
-        // Create file metadata
-        StorageMetadata metadata = new StorageMetadata.Builder()
-                .setCustomMetadata("shareTo", profile.getNickname())
-                .setCustomMetadata("isCollected", "false")
-                .build();
-
-        UploadTask uploadTask = storageRef.putFile(Uri.fromFile(file), metadata);
+        UploadTask uploadTask = storageRef.putFile(Uri.fromFile(file));
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(Exception exception) {
@@ -48,21 +47,25 @@ final public class ModelFirebase {
         });
     }
 
-    public static void loadFile(File file, final FirebaseListener listener){
+    public static void loadFileByOwner(String owner, final FirebaseLoadListener listener){
         FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        final StorageReference pathReference = storageRef.child(owner);
 
-        StorageReference storageRef = storage.getReference().child(file.getName());
+        final File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                                   + "/" + owner + ".jpeg");
 
-        storageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+        pathReference.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                listener.complete(true);
+                listener.complete(file);
+                pathReference.delete();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(Exception exception) {
                 // Handle any errors
-                listener.complete(false);
+                listener.complete(null);
             }
         });
     }
