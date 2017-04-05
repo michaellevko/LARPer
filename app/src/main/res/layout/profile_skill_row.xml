@@ -15,7 +15,7 @@
         android:id="@+id/skill_add_btn"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        tools:text="+"
+        android:text="+"
         android:layout_alignBaseline="@+id/skill_name_et"
         android:layout_alignBottom="@+id/skill_name_et"
         android:layout_toEndOf="@+id/skill_name_et"
@@ -33,7 +33,7 @@
         android:id="@+id/skill_sub_btn"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        tools:text="-"
+        android:text="-"
         android:layout_marginStart="50dp"
         android:layout_alignTop="@+id/skill_level_et"
         android:layout_toEndOf="@+id/skill_add_btn" />

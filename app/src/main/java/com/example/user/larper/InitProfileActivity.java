@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.user.larper.Model.Model;
 import com.example.user.larper.Model.Profile;
@@ -82,14 +83,39 @@ public class InitProfileActivity extends ListActivity {
                         .getText().toString();
                 String hitpoints = ((EditText)findViewById(R.id.profile_hitpoints_et))
                         .getText().toString();
+                ArrayList<Skill> skills = lvAdapter.getItems();
 
-                Profile acctProfile = new Profile(nickName, age, gender, race,
-                        scenarioClass, bio, hitpoints, lvAdapter.getItems());
-                Model.getInstance().setProfile(acctProfile);
+                if (!validateInput(nickName, age, race, scenarioClass, bio, hitpoints, skills)) {
 
-                launchMainActivity();
+                } else {
+                    Profile acctProfile = new Profile(nickName, age, gender, race,
+                            scenarioClass, bio, hitpoints, lvAdapter.getItems());
+                    Model.getInstance().setProfile(acctProfile);
+
+                    launchMainActivity();
+                }
             }
         });
+    }
+
+    private boolean validateInput(String nickName, String age, String race,
+                                  String scenarioClass, String bio, String hitPoints, ArrayList<Skill> skills) {
+        boolean isValid = true;
+        if ((nickName.equals("")) || (age.equals("")) || (race.equals("")) || (scenarioClass.equals("")) ||
+                (bio.equals("")) || (hitPoints.equals("")) || (skills.size() == 0)) {
+            isValid = false;
+            Toast.makeText(getApplicationContext(),
+                    "Must fill all fields in profile.", Toast.LENGTH_SHORT).show();
+        }
+        if (!age.equals("")) {
+            if (Integer.parseInt(age) == 0) {
+                isValid = false;
+                Toast.makeText(getApplicationContext(),
+                        "Age cant be 0.", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        return isValid;
     }
 
     private void launchMainActivity(){

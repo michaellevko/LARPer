@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,6 +74,21 @@ public class ProfileFragment extends ListFragment {
         lvAdapter = new SkillsAdapter();
         setListAdapter(lvAdapter);
 
+        nickName.setFocusable(false);
+        nickName.setClickable(false);
+        age.setFocusable(false);
+        age.setClickable(false);
+        genders.setFocusable(false);
+        genders.setClickable(false);
+        race.setFocusable(false);
+        race.setClickable(false);
+        scenarioClass.setFocusable(false);
+        scenarioClass.setClickable(false);
+        bio.setFocusable(false);
+        bio.setClickable(false);
+        hitPoints.setFocusable(false);
+        hitPoints.setClickable(false);
+
         return view;
     }
 
@@ -98,6 +115,13 @@ public class ProfileFragment extends ListFragment {
 
     private class SkillsAdapter extends BaseAdapter {
 
+        class ViewHolder{
+            CustomTextWatcher textWatch;
+            protected EditText skillLevel;
+            protected Button addBtn;
+            protected Button subBtn;
+        }
+
         @Override
         public int getCount() { return skills.size(); }
 
@@ -109,18 +133,38 @@ public class ProfileFragment extends ListFragment {
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
+            CustomTextWatcher textWatch;
+            final Skill s = skills.get(position);
+
             // reuse views
             if (convertView == null) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 convertView = inflater.inflate(R.layout.profile_skill_row, null);
-                EditText et = ((EditText)convertView.findViewById(R.id.skill_level_et));
-                String level = skills.get(position).getLevel();
-                et.setText(level);
+                ViewHolder vh = new ViewHolder();
+                vh.skillLevel = ((EditText)convertView.findViewById(R.id.skill_level_et));
+                vh.skillLevel.setText(skills.get(position).getLevel());
+                vh.addBtn = (Button)convertView.findViewById(R.id.skill_add_btn);
+                vh.subBtn = (Button)convertView.findViewById(R.id.skill_sub_btn);
+                vh.textWatch = new CustomTextWatcher(vh.skillLevel, s, vh.addBtn, vh.subBtn);
+                vh.skillLevel.addTextChangedListener(vh.textWatch);
+
+                convertView.setTag(vh);
+                vh.skillLevel.setTag(s);
+                vh.addBtn.setTag(s);
+                vh.subBtn.setTag(s);
+            } else {
+                ViewHolder vh = (ViewHolder)convertView.getTag();
+                vh.skillLevel.setTag(s);
+                vh.addBtn.setTag(s);
+                vh.subBtn.setTag(s);
+                vh.textWatch.s = s;
             }
 
-            final EditText skillLevel = ((EditText)convertView.findViewById(R.id.skill_level_et));
-            skillLevel.setFocusable(false);
-            skillLevel.setClickable(false);
+            final ViewHolder vh = (ViewHolder)convertView.getTag();
+            vh.skillLevel.setText(s.getLevel());
+
+            vh.skillLevel.setFocusable(false);
+            vh.skillLevel.setClickable(false);
             Button addSkillBtn = ((Button)convertView.findViewById(R.id.skill_add_btn));
             addSkillBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -128,7 +172,7 @@ public class ProfileFragment extends ListFragment {
                     int newVal = Integer.parseInt(skills.get(position).getLevel()) + 1;
                     if (newVal <= 100) {
                         skills.get(position).setLevel(Integer.toString(newVal));
-                        skillLevel.setText(newVal);
+                        vh.skillLevel.setText(Integer.toString(newVal));
                     }
                 }
             });
@@ -139,26 +183,61 @@ public class ProfileFragment extends ListFragment {
                     int newVal = Integer.parseInt(skills.get(position).getLevel()) - 1;
                     if (newVal >= 0) {
                         skills.get(position).setLevel(Integer.toString(newVal));
-                        skillLevel.setText(newVal);
+                        vh.skillLevel.setText(Integer.toString(newVal));
                     }
                 }
             });
-
-            if (!skillLevel.getText().toString().equals("")) {
-                if (Integer.parseInt(skillLevel.getText().toString()) == 100) {
-                    addSkillBtn.setEnabled(false);
-                } else if (Integer.parseInt(skillLevel.getText().toString()) == 0) {
-                    subSkillBtn.setEnabled(false);
-                } else {
-                    if (!addSkillBtn.isEnabled()) {addSkillBtn.setEnabled(true);}
-                    if (!subSkillBtn.isEnabled()) {subSkillBtn.setEnabled(true);}
-                }
-            }
 
             Log.d("TAG", "Position is: " + position);
             ((EditText)convertView.findViewById(R.id.skill_name_et))
                     .setText(skills.get(position).getName());
             return convertView;
+        }
+
+        private class CustomTextWatcher implements TextWatcher {
+
+            private EditText skillLevel;
+            private Skill s;
+            private Button addBtn;
+            private Button subBtn;
+
+            public CustomTextWatcher(EditText e, Skill s, Button add, Button sub) {
+                this.skillLevel = e;
+                this.s = s;
+                this.addBtn = add;
+                this.subBtn = sub;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+
+                String text = arg0.toString();
+
+                if (text != null && text.length() > 0) {
+                    if (this.skillLevel.getId() == R.id.skill_level_et) {
+                        if (!skillLevel.getText().toString().equals("")) {
+                            if (Integer.parseInt(skillLevel.getText().toString()) == 100) {
+                                this.addBtn.setEnabled(false);
+                            } else if (Integer.parseInt(skillLevel.getText().toString()) == 0) {
+                                this.subBtn.setEnabled(false);
+                            } else {
+                                if (!this.addBtn.isEnabled()) {this.addBtn.setEnabled(true);}
+                                if (!this.subBtn.isEnabled()) {this.subBtn.setEnabled(true);}
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
