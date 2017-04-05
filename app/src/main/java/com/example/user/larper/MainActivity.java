@@ -14,7 +14,8 @@ import com.example.user.larper.Model.Model;
 public class MainActivity extends Activity
         implements ProfileFragment.OnProfileFragmentListener,
         BlueprintsFragment.OnBlueprintFragmentListener,
-        NewBlueprintFragment.OnNewBlueprintFragmentListener{
+        NewBlueprintFragment.OnNewBlueprintFragmentListener,
+        LoreFragment.OnLoreFragmentListener{
 
     String acctDisplayName;
     int acctId;
@@ -114,5 +115,10 @@ public class MainActivity extends Activity
     @Override
     public void gotoBlueprintInterface() {
         this.goToFragment(new BlueprintsFragment(), getString(R.string.blueprints_fragment));
+    }
+
+    @Override
+    public void gotoNewLoreInterface() {
+        this.goToFragment(new NewLoreFragment(), getString(R.string.lore_fragment));
     }
 }

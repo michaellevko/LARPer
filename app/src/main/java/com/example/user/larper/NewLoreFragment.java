@@ -1,13 +1,13 @@
 package com.example.user.larper;
 
-import android.app.Activity;
-import android.app.ListActivity;
+import android.app.Fragment;
+import android.app.ListFragment;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -17,43 +17,42 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.example.user.larper.Model.Model;
 import com.example.user.larper.Model.Profile;
 import com.example.user.larper.Model.Skill;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
-public class InitProfileActivity extends ListActivity {
+/**
+ * Created by User on 4/5/2017.
+ */
 
-    private String acctDisplayName;
+public class NewLoreFragment extends ListFragment {
+
+    private OnNewLoreFragmentListener mListener;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_init_profile);
-
-        acctDisplayName = this.getIntent().getExtras()
-                .getString(getResources().getString(R.string.account_display_name));
-        ((TextView)findViewById(R.id.hello_acct_tv)).setText(acctDisplayName);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        final View view = inflater.inflate(R.layout.fragment_new_lore, container, false);
 
         // Set gender spinner values
-        Spinner spinner = ((Spinner)findViewById(R.id.profile_gender_spinner));
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,
+        Spinner spinner = ((Spinner)view.findViewById(R.id.profile_gender_spinner));
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.gender_spinner_layout, R.id.gender_spinner_item_tv,
                 getResources().getStringArray(R.array.Genders));
         spinner.setAdapter(spinnerAdapter);
 
         // Set Skills listview
-        final SkillsAdapter lvAdapter = new SkillsAdapter(this,
+        final SkillsAdapter lvAdapter = new SkillsAdapter(getActivity(),
                 R.layout.profile_skill_row, R.id.skill_name_et, new ArrayList<Skill>());
         setListAdapter(lvAdapter);
 
-        Button addSkillBtn = ((Button)findViewById(R.id.profile_add_skill_btn));
+        Button addSkillBtn = ((Button)view.findViewById(R.id.profile_add_skill_btn));
         addSkillBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,39 +62,55 @@ public class InitProfileActivity extends ListActivity {
             }
         });
 
-        Button saveProfileBtn = ((Button)findViewById(R.id.init_profile_save_btn));
+        Button saveProfileBtn = ((Button)view.findViewById(R.id.lore_new_save_btn));
         saveProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String nickName = ((EditText)findViewById(R.id.profile_nickname_et))
+                String nickName = ((EditText)view.findViewById(R.id.profile_nickname_et))
                         .getText().toString();
-                String age = ((EditText)findViewById(R.id.profile_age_et))
+                String age = ((EditText)view.findViewById(R.id.profile_age_et))
                         .getText().toString();
-                String gender = ((Spinner)findViewById(R.id.profile_gender_spinner))
+                String gender = ((Spinner)view.findViewById(R.id.profile_gender_spinner))
                         .getSelectedItem().toString();
-                String race = ((EditText)findViewById(R.id.profile_race_et))
+                String race = ((EditText)view.findViewById(R.id.profile_race_et))
                         .getText().toString();
-                String scenarioClass = ((EditText)findViewById(R.id.profile_class_et))
+                String scenarioClass = ((EditText)view.findViewById(R.id.profile_class_et))
                         .getText().toString();
-                String bio = ((EditText)findViewById(R.id.profile_bio_et))
+                String bio = ((EditText)view.findViewById(R.id.profile_bio_et))
                         .getText().toString();
-                String hitpoints = ((EditText)findViewById(R.id.profile_hitpoints_et))
+                String hitpoints = ((EditText)view.findViewById(R.id.profile_hitpoints_et))
                         .getText().toString();
 
-                Profile acctProfile = new Profile(nickName, age, gender, race,
+                Profile profile = new Profile(nickName, age, gender, race,
                         scenarioClass, bio, hitpoints, lvAdapter.getItems());
-                Model.getInstance().setProfile(acctProfile);
+                Model.getInstance().addProfileToLore(profile);
 
-                launchMainActivity();
+                mListener.gotoLoreInterface();
             }
         });
+
+        return view;
     }
 
-    private void launchMainActivity(){
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(getResources().getString(R.string.account_display_name), acctDisplayName);
-        startActivity(intent);
-        this.finish();
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnNewLoreFragmentListener) {
+            mListener = (OnNewLoreFragmentListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnInitProfileFragmentListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnNewLoreFragmentListener {
+        void gotoLoreInterface();
     }
 
     private class SkillsAdapter extends ArrayAdapter<Skill>{
@@ -128,7 +143,7 @@ public class InitProfileActivity extends ListActivity {
 
             // reuse views
             if (v == null) {
-                v = getLayoutInflater().inflate(R.layout.profile_skill_row, null);
+                v = getActivity().getLayoutInflater().inflate(R.layout.profile_skill_row, null);
                 final ViewHolder vh = new ViewHolder();
                 vh.skillName = (EditText)v.findViewById(R.id.skill_name_et);
                 vh.skillLevel = (EditText)v.findViewById(R.id.skill_level_et);
