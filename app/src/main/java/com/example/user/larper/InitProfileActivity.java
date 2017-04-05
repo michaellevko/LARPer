@@ -59,7 +59,8 @@ public class InitProfileActivity extends ListActivity {
             public void onClick(View v) {
                 //skills.add(new Skill());
                 //lvAdapter.notifyDataSetChanged();
-                lvAdapter.add(new Skill());
+                Skill s = new Skill();
+                lvAdapter.add(s);
             }
         });
 
@@ -111,6 +112,7 @@ public class InitProfileActivity extends ListActivity {
         }
 
         class ViewHolder{
+            CustomTextWatcher textWatch;
             protected EditText skillName;
             protected EditText skillLevel;
         }
@@ -132,8 +134,8 @@ public class InitProfileActivity extends ListActivity {
                 final ViewHolder vh = new ViewHolder();
                 vh.skillName = (EditText)v.findViewById(R.id.skill_name_et);
                 vh.skillLevel = (EditText)v.findViewById(R.id.skill_level_et);
-
-                vh.skillName.addTextChangedListener(new CustomTextWatcher(vh.skillName, s));
+                vh.textWatch = new CustomTextWatcher(vh.skillName, s);
+                vh.skillName.addTextChangedListener(vh.textWatch);
 
                 v.setTag(vh);
                 vh.skillName.setTag(s);
@@ -142,6 +144,7 @@ public class InitProfileActivity extends ListActivity {
                 ViewHolder vh = (ViewHolder)v.getTag();
                 vh.skillName.setTag(s);
                 vh.skillLevel.setTag(s);
+                vh.textWatch.s = s;
             }
 
             ViewHolder vh = (ViewHolder)v.getTag();
