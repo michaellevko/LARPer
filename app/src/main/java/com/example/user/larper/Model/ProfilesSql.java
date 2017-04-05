@@ -16,7 +16,6 @@ import java.util.List;
 public class ProfilesSql {
 
     final static String TABLE_NAME = "PROFILE";
-    final static String UUID = "uuid";
     final static String NICKNAME = "nickName";
     final static String AGE = "age";
     final static String GENDER = "gender";
@@ -25,11 +24,12 @@ public class ProfilesSql {
     final static String HITPOINTS = "hitPoints";
     final static String SKILLS = "skills";
     final static String BIOGRAPHY = "biography";
+    final static String OWNER = "owner";
 
     public static void addProfile(SQLiteDatabase writableDatabase, Profile profile) {
         ContentValues values = new ContentValues();
 
-        values.put(UUID, profile.getUuid());
+        values.put(OWNER, StaticProfilesSql.curr_owner.toString());
         values.put(NICKNAME, profile.getNickName());
         values.put(AGE, profile.getAge());
         values.put(GENDER, profile.getGender());
@@ -39,47 +39,22 @@ public class ProfilesSql {
         values.put(SKILLS, new Gson().toJson(profile.getSkills()));
         values.put(BIOGRAPHY, profile.getBiography());
 
-        long rowId = writableDatabase.insert(TABLE_NAME, UUID, values);
+        long rowId = writableDatabase.insertWithOnConflict(TABLE_NAME, null, values,
+                SQLiteDatabase.CONFLICT_REPLACE);
         if (rowId <= 0) {
             Log.e("TAG","fail to insert into profile");
         }
     }
 
-    public static Profile getProfileByUuid(SQLiteDatabase readableDatabase, String uid) {
-        String[] selectionArgs = {uid};
-        Cursor cursor = readableDatabase.query(TABLE_NAME,null, UUID + " = ?",selectionArgs ,null,null,null);
+    public static ArrayList<Profile> GetAllProfilesByOwner(SQLiteDatabase readableDatabase){
+        String[] selectionArgs = {StaticProfilesSql.curr_owner.toString()};
         Profile profile = null;
-        if (cursor.moveToFirst() == true){
+        Cursor cursor = readableDatabase.query(TABLE_NAME,null, OWNER + " = ?",selectionArgs ,null,null,null);
 
-             String uuid = cursor.getString(cursor.getColumnIndex(UUID));
-             String nickName = cursor.getString(cursor.getColumnIndex(NICKNAME));
-             String age = cursor.getString(cursor.getColumnIndex(AGE));
-             String gender = cursor.getString(cursor.getColumnIndex(GENDER));
-             String scenarioClass = cursor.getString(cursor.getColumnIndex(SCENARIOCLASS));
-             String race = cursor.getString(cursor.getColumnIndex(RACE));
-             String hitPoints = cursor.getString(cursor.getColumnIndex(HITPOINTS));
-             String skills = cursor.getString(cursor.getColumnIndex(SKILLS));
-             String biography = cursor.getString(cursor.getColumnIndex(BIOGRAPHY));
-
-             profile = new Profile(nickName, age, gender, race, scenarioClass, biography, hitPoints,
-                                   (ArrayList<Skill>)new Gson().fromJson(skills,
-                                           new TypeToken<ArrayList<Skill>>(){}.getType()));
-        }
-
-        return profile;
-    }
-
-    public static List<Profile> GetAllProfiles(SQLiteDatabase readableDatabase){
-        Profile profile = null;
-        Cursor cursor;
-        String selectQuery = "SELECT  * FROM " + TABLE_NAME;
-        cursor = readableDatabase.rawQuery(selectQuery, null);
-
-        List<Profile> profiles = new ArrayList<Profile>();
+        ArrayList<Profile> profiles = new ArrayList<Profile>();
 
         if (cursor.moveToFirst()){
             do {
-                String uuid = cursor.getString(cursor.getColumnIndex(UUID));
                 String nickName = cursor.getString(cursor.getColumnIndex(NICKNAME));
                 String age = cursor.getString(cursor.getColumnIndex(AGE));
                 String gender = cursor.getString(cursor.getColumnIndex(GENDER));
@@ -102,7 +77,7 @@ public class ProfilesSql {
     public static void create(SQLiteDatabase sqLiteDatabase)
     {
         sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_NAME +
-                " (" + UUID + " TEXT, " + NICKNAME +
+                " (" + OWNER + " TEXT, " + NICKNAME +
                 " TEXT, " + AGE + " TEXT, " + GENDER +
                 " TEXT, "  + SCENARIOCLASS + " TEXT, " + RACE +
                 " TEXT, " + HITPOINTS + " TEXT, " + SKILLS + " TEXT, " +
@@ -114,7 +89,7 @@ public class ProfilesSql {
     }
 
     private static String[] getColumns(){
-        String[] columns = {UUID,NICKNAME,AGE,GENDER,SCENARIOCLASS,RACE,HITPOINTS,SKILLS, BIOGRAPHY};
+        String[] columns = {OWNER,NICKNAME,AGE,GENDER,SCENARIOCLASS,RACE,HITPOINTS,SKILLS, BIOGRAPHY};
         return columns;
     }
 }

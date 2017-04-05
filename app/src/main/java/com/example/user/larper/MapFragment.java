@@ -72,6 +72,8 @@ public class MapFragment extends Fragment {
 
         // handle spinner contact selection
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            boolean first = true;
+
             @Override
             public void onNothingSelected(AdapterView<?> parent)
             {
@@ -80,7 +82,10 @@ public class MapFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
-                shareImage();
+                if(!first)
+                    shareImage();
+                else
+                    first = false;
             }
         });
 

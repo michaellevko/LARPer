@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.user.larper.Model.Model;
+import com.example.user.larper.Model.ModelSqlite;
 import com.example.user.larper.Model.Profile;
 
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ public class LoreFragment extends ListFragment {
         View view = inflater.inflate(R.layout.fragment_lore, container, false);
 
         // Set list adapter
+        ModelSqlite sql = new ModelSqlite(this.getContext());
+        Model.getInstance().setLore(sql.getAllProfilesByOwner());
         loreList = Model.getInstance().getLore();
         setListAdapter(adapter);
 
