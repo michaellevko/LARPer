@@ -64,17 +64,30 @@ public class ModelSqlite {
                 contact);
     }
 
+    public void saveBlueprint(Blueprint blueprint, String owner)
+    {
+        BlueprintsSql.writeBlueprint(blueprintsHelper.getWritableDatabase(),
+                                     blueprint, owner);
+    }
+
     public ArrayList<StaticProfile> getOwnerContacts()
     {
         return StaticProfilesSql.getContactsByOwner(
-                   staticProfileHelper.getReadableDatabase());
+                staticProfileHelper.getReadableDatabase());
+    }
+
+    public ArrayList<Blueprint> getOwnerBlueprints()
+    {
+        SQLiteDatabase sql = blueprintsHelper.getReadableDatabase();
+        return BlueprintsSql.GetBlueprintsByOwner(
+                (sql));
     }
 
     class ProfilesHelper extends SQLiteOpenHelper{
 
 
         public ProfilesHelper(Context context) {
-            super(context, "database.db", null, version);
+            super(context, "profiles.db", null, version);
         }
 
         @Override
@@ -93,7 +106,7 @@ public class ModelSqlite {
 
 
         public BlueprintsHelper(Context context) {
-            super(context, "database.db", null, version);
+            super(context, "blueprints.db", null, version);
         }
 
         @Override
@@ -112,7 +125,7 @@ public class ModelSqlite {
 
 
         public StaticProfilesHelper(Context context) {
-            super(context, "database.db", null, version);
+            super(context, "staticprofiles.db", null, version);
         }
 
         @Override
