@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.user.larper.Model.Model;
 import com.example.user.larper.Model.Profile;
@@ -89,6 +90,16 @@ public class ProfileFragment extends ListFragment {
         hitPoints.setFocusable(false);
         hitPoints.setClickable(false);
 
+        Button profileDel = (Button)view.findViewById(R.id.delete_profile);
+        profileDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Model.getInstance().deleteProfile();
+                Toast.makeText(getActivity(), "Profile Deleted.", Toast.LENGTH_SHORT).show();
+                mListener.gotoInitProfileActivity();
+            }
+        });
+
         return view;
     }
 
@@ -110,7 +121,7 @@ public class ProfileFragment extends ListFragment {
     }
 
     public interface OnProfileFragmentListener {
-        void profileDeleted();
+        void gotoInitProfileActivity();
     }
 
     private class SkillsAdapter extends BaseAdapter {
@@ -189,8 +200,10 @@ public class ProfileFragment extends ListFragment {
             });
 
             Log.d("TAG", "Position is: " + position);
-            ((EditText)convertView.findViewById(R.id.skill_name_et))
-                    .setText(skills.get(position).getName());
+            EditText skillName = (EditText)convertView.findViewById(R.id.skill_name_et);
+            skillName.setText(skills.get(position).getName());
+            skillName.setFocusable(false);
+            skillName.setClickable(false);
             return convertView;
         }
 

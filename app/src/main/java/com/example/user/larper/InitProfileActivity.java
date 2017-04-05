@@ -114,6 +114,12 @@ public class InitProfileActivity extends ListActivity {
                         "Age cant be 0.", Toast.LENGTH_SHORT).show();
             }
         }
+        for (Skill s: skills) {
+            if (s.getName().equals("")){
+                isValid = false;
+                break;
+            }
+        }
 
         return isValid;
     }

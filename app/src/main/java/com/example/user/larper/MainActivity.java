@@ -90,17 +90,7 @@ public class MainActivity extends Activity
         }
     }
 
-    @Override
-    public void profileDeleted() {
-        /*TODO: CALL SQLITE TO DELETE ALL RELATED ITEMS*/
-        Model.getInstance().deleteProfile();
-        Model.getInstance().getBlueprints().clear();
-        Model.getInstance().getLore().clear();
-        /*TODO: DELETE MAPS*/
-        gotoInitProfileActivity();
-    }
-
-    private void gotoInitProfileActivity(){
+    public void gotoInitProfileActivity(){
         Intent intent = new Intent(this, InitProfileActivity.class);
         intent.putExtra(getApplicationContext().getResources()
                 .getString(R.string.account_display_name), acctDisplayName);

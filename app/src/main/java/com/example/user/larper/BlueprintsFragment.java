@@ -38,6 +38,7 @@ public class BlueprintsFragment extends ListFragment {
     private OnBlueprintFragmentListener mListener;
     BlueprintAdapter adapter = new BlueprintAdapter();
     ArrayList<Blueprint> bpList;
+    Spinner spinner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,6 +58,19 @@ public class BlueprintsFragment extends ListFragment {
                 mListener.gotoNewBlueprintInterface();
             }
         });
+
+        // init contact spinner adapter
+        ArrayList<StaticProfile> contacts = new ArrayList<StaticProfile>();
+        final ArrayAdapter adapter = new ArrayAdapter(
+                getActivity().getBaseContext(),
+                android.R.layout.simple_spinner_item,
+                contacts);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // define spinner
+        spinner = ((Spinner) view.findViewById(R.id.spinner2));
+        spinner.setAdapter(adapter);
+        spinner.setVisibility(View.INVISIBLE);
 
         return view;
     }
@@ -96,7 +110,6 @@ public class BlueprintsFragment extends ListFragment {
     public class BlueprintAdapter extends BaseAdapter {
 
         ArrayList<StaticProfile> contacts;
-        Spinner spinner;
 
         @Override
         public int getCount() {
@@ -113,74 +126,40 @@ public class BlueprintsFragment extends ListFragment {
             return position;
         }
 
-        public void shareBlueprint(int position) {
-            Blueprint bp = bpList.get(position);
-
-            ModelFirebaseRealtime.saveBlueprint(new BlueprintAndOwner(bp,
-                    spinner.getSelectedItem().toString()),
-                    new ModelFirebaseRealtime.FirebaseRealtimeListener() {
-                @Override
-                public void complete(boolean result) {
-                    if (result) {
-                        Toast.makeText(
-                                getActivity().getApplicationContext(),
-                                "Successfully shared blueprint",
-                                Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(
-                                getActivity().getApplicationContext(),
-                                "Failed sharing blueprint",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                    spinner.setVisibility(View.INVISIBLE);
-                }
-            });
-        }
-
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
+
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.blueprint_row_details, null);
-                ImageButton bpShare = (ImageButton)convertView.findViewById(R.id.blueprint_share_btn);
-                Drawable shareImg = getResources().getDrawable(R.drawable.share_icon);
-                shareImg.setBounds(0, 0, 40, 40);
-                bpShare.setImageDrawable(shareImg);
-
-                // init contact spinner adapter
-                contacts = new ArrayList<StaticProfile>();
-                final ArrayAdapter adapter = new ArrayAdapter(
-                        getActivity().getBaseContext(),
-                        android.R.layout.simple_spinner_item,
-                        contacts);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                // define spinner
-                spinner = ((Spinner) convertView.findViewById(R.id.spinner2));
-                spinner.setVisibility(View.INVISIBLE);
-                spinner.setAdapter(adapter);
-
-                // handle spinner contact selection
-                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent)
-                    {
-                        spinner.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
-                        shareBlueprint(position);
-                    }
-                });
-
-                bpShare.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        spinner.setVisibility(View.VISIBLE);
-                    }
-                });
             }
+
+            ImageButton bpShare = (ImageButton)convertView.findViewById(R.id.blueprint_share_btn);
+            /*Drawable shareImg = getResources().getDrawable(R.drawable.share_icon);
+            shareImg.setBounds(0, 0, 40, 40);
+            bpShare.setImageDrawable(shareImg);*/
+
+            // handle spinner contact selection
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent)
+                {
+                    spinner.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
+                    shareBlueprint(position);
+                }
+            });
+
+            bpShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    spinner.setVisibility(View.VISIBLE);
+                }
+            });
+
             Blueprint bp = bpList.get(position);
             ((TextView)convertView.findViewById(R.id.blueprint_name_tv)).setText(bp.getName());
             ((TextView)convertView.findViewById(R.id.blueprint_crafting_time_tv)).setText(bp.getCraftingTime());
@@ -190,5 +169,27 @@ public class BlueprintsFragment extends ListFragment {
         }
     }
 
+    public void shareBlueprint(int position) {
+        Blueprint bp = bpList.get(position);
 
+        ModelFirebaseRealtime.saveBlueprint(new BlueprintAndOwner(bp,
+                        spinner.getSelectedItem().toString()),
+                new ModelFirebaseRealtime.FirebaseRealtimeListener() {
+                    @Override
+                    public void complete(boolean result) {
+                        if (result) {
+                            Toast.makeText(
+                                    getActivity().getApplicationContext(),
+                                    "Successfully shared blueprint",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(
+                                    getActivity().getApplicationContext(),
+                                    "Failed sharing blueprint",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        spinner.setVisibility(View.INVISIBLE);
+                    }
+                });
+    }
 }
