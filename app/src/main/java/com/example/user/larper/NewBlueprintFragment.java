@@ -26,15 +26,16 @@ import com.example.user.larper.Model.Model;
 import com.example.user.larper.Model.ModelSqlite;
 import com.example.user.larper.Model.StaticProfilesSql;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class NewBlueprintFragment extends Fragment {
 
     private OnNewBlueprintFragmentListener mListener;
-    IngredientAdapter adapter = new IngredientAdapter();
-    ArrayList<Ingredient> ingList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,6 +45,9 @@ public class NewBlueprintFragment extends Fragment {
 
         // Set list adapter for ingredients listview
         ListView lv = (ListView)view.findViewById(R.id.blueprint_ingredients_lv);
+        final ArrayList<Ingredient> ingList = new ArrayList<>();
+        final IngredientAdapter adapter = new IngredientAdapter(getActivity(),
+                R.layout.ingredient_row_details, R.id.ingredient_name_et, ingList);
         lv.setAdapter(adapter);
 
         final EditText bpName = (EditText)view.findViewById(R.id.blueprint_name_et);
@@ -67,12 +71,12 @@ public class NewBlueprintFragment extends Fragment {
                     ModelSqlite sql = new ModelSqlite(getContext());
                     sql.saveBlueprint(blueprintToSave, StaticProfilesSql.curr_owner.toString());
 
-                    Toast.makeText(getActivity(), "Blueprint Saved.", Toast.LENGTH_SHORT);
+                    Toast.makeText(getActivity(), "Blueprint Saved.", Toast.LENGTH_SHORT).show();
 
                     mListener.gotoBlueprintInterface();
                 } else {
                     Toast.makeText(getActivity(), "Blueprint must contain at least one ingredient.",
-                            Toast.LENGTH_SHORT);
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -81,7 +85,7 @@ public class NewBlueprintFragment extends Fragment {
         bpCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Canceled.", Toast.LENGTH_SHORT);
+                Toast.makeText(getActivity(), "Canceled.", Toast.LENGTH_SHORT).show();
                 mListener.gotoBlueprintInterface();
             }
         });
@@ -120,22 +124,26 @@ public class NewBlueprintFragment extends Fragment {
         void gotoBlueprintInterface();
     }
 
-    public class IngredientAdapter extends BaseAdapter {
+    public class IngredientAdapter extends ArrayAdapter {
 
+        private ArrayList<Ingredient> ingList;
+        private Context context;
 
-        @Override
-        public int getCount() {
-            return ingList.size();
+        public IngredientAdapter(@NonNull Context context, @LayoutRes int resource,
+                                 @IdRes int textViewResourceId, @NonNull ArrayList<Ingredient> objects) {
+            super(context, resource, textViewResourceId, objects);
+            this.ingList = objects;
+            this.context = context;
         }
 
-        @Override
-        public Object getItem(int position) {
-            return ingList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
+        private class ViewHolder{
+            CustomTextWatcher nameTextWatch;
+            CustomTextWatcher priceTextWatch;
+            CustomTextWatcher quantityTextWatch;
+            EditText ingName;
+            EditText price;
+            EditText quantity;
+            EditText totalCost;
         }
 
         @Override
@@ -146,45 +154,91 @@ public class NewBlueprintFragment extends Fragment {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.ingredient_row_details, null);
 
-                EditText totalCost =(EditText)convertView.findViewById(R.id.ingredient_price_sum_et);
-                totalCost.setFocusable(false);
-                totalCost.setClickable(false);
+                ViewHolder vh = new ViewHolder();
+                vh.ingName = (EditText)convertView.findViewById(R.id.ingredient_name_et);
+                vh.price = (EditText)convertView.findViewById(R.id.ingredient_price_et);
+                vh.quantity = (EditText)convertView.findViewById(R.id.ingredient_quantity_et);
+                vh.totalCost = (EditText)convertView.findViewById(R.id.ingredient_price_sum_et);
+                vh.nameTextWatch = new CustomTextWatcher(vh.ingName, vh.totalCost, ing);
+                vh.ingName.addTextChangedListener(vh.nameTextWatch);
+                vh.priceTextWatch = new CustomTextWatcher(vh.price, vh.totalCost, ing);
+                vh.price.addTextChangedListener(vh.priceTextWatch);
+                vh.quantityTextWatch = new CustomTextWatcher(vh.quantity, vh.totalCost, ing);
+                vh.quantity.addTextChangedListener(vh.quantityTextWatch);
+                vh.totalCost.setFocusable(false);
+                vh.totalCost.setClickable(false);
+
+                convertView.setTag(vh);
+                vh.ingName.setTag(ing);
+                vh.price.setTag(ing);
+                vh.quantity.setTag(ing);
+                vh.totalCost.setTag(ing);
+            } else {
+                ViewHolder vh = (ViewHolder)convertView.getTag();
+                vh.ingName.setTag(ing);
+                vh.price.setTag(ing);
+                vh.quantity.setTag(ing);
+                vh.totalCost.setTag(ing);
+                vh.nameTextWatch.ing = ing;
+                vh.priceTextWatch.ing = ing;
+                vh.quantityTextWatch.ing = ing;
             }
 
-            final EditText price = (EditText)convertView.findViewById(R.id.ingredient_price_et);
-            price.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if (!hasFocus) {
-                        ing.setPrice(price.getText().toString());
-                        price.setTag(ing);
-                    }
-                }
-            });
-            final EditText quantity = (EditText)convertView.findViewById(R.id.ingredient_quantity_et);
-            price.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if (!hasFocus) {
-                        ing.setPrice(quantity.getText().toString());
-                        quantity.setTag(ing);
-                    }
-                }
-            });
-
-            final EditText name = (EditText)convertView.findViewById(R.id.ingredient_name_et);
-            //final EditText price = (EditText)convertView.findViewById(R.id.ingredient_price_et);
-            //final EditText quantity = (EditText)convertView.findViewById(R.id.ingredient_quantity_et);
-            final EditText totalCost = (EditText)convertView.findViewById(R.id.ingredient_price_sum_et);
-
-            name.setText(ing.getName());
-            price.setText(ing.getPrice());
-            quantity.setText(ing.getQuantity());
-            if ((price.getTag() != null) && (quantity.getTag() != null)) {
-                totalCost.setText(ing.getPriceSum());
-            }
+            ViewHolder vh = (ViewHolder)convertView.getTag();
+            vh.ingName.setText(ing.getName());
+            vh.price.setText(ing.getPrice());
+            vh.quantity.setText(ing.getQuantity());
+            vh.totalCost.setText(ing.getPriceSum());
 
             return convertView;
+        }
+
+        private class CustomTextWatcher implements TextWatcher {
+
+            private EditText et;
+            private EditText totalCost;
+            private Ingredient ing;
+
+            public CustomTextWatcher(EditText e, EditText t, Ingredient ing) {
+                this.et = e;
+                this.totalCost = t;
+                this.ing = ing;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+
+                String text = arg0.toString();
+
+                if (text != null && text.length() > 0) {
+                    switch (this.et.getId()) {
+                        case R.id.ingredient_name_et: {
+                            ing.setName(text);
+                            break;
+                        }
+                        case R.id.ingredient_price_et: {
+                            ing.setPrice(text);
+                            this.totalCost.setText(ing.getPriceSum());
+                            break;
+                        }
+                        case R.id.ingredient_quantity_et: {
+                            ing.setQuantity(text);
+                            this.totalCost.setText(ing.getPriceSum());
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 }
