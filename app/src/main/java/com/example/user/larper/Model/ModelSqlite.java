@@ -49,12 +49,8 @@ public class ModelSqlite {
         }
     }
 
-    public Profile getProfileByUID(String uuid){
-        return ProfilesSql.getProfileByUuid(profilesHelper.getReadableDatabase(), uuid);
-    }
-
-    public List<Profile> getAllProfiles(boolean isCreated) {
-        return ProfilesSql.GetAllProfiles(profilesHelper.getReadableDatabase());
+    public ArrayList<Profile> getAllProfilesByOwner() {
+        return ProfilesSql.GetAllProfilesByOwner(profilesHelper.getReadableDatabase());
     }
 
     public void saveContact(StaticProfile contact)

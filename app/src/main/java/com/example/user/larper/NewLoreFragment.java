@@ -4,13 +4,6 @@ import android.app.Fragment;
 import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.example.user.larper.Model.Model;
+import com.example.user.larper.Model.ModelSqlite;
 import com.example.user.larper.Model.Profile;
 import com.example.user.larper.Model.Skill;
 
@@ -84,6 +78,9 @@ public class NewLoreFragment extends ListFragment {
                 Profile profile = new Profile(nickName, age, gender, race,
                         scenarioClass, bio, hitpoints, lvAdapter.getItems());
                 Model.getInstance().addProfileToLore(profile);
+                ModelSqlite sql = new ModelSqlite(getContext());
+                sql.createProfile(profile);
+
 
                 mListener.gotoLoreInterface();
             }
