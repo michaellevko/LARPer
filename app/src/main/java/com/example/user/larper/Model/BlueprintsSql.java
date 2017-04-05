@@ -18,34 +18,35 @@ import java.util.List;
 public class BlueprintsSql {
 
     final static String TABLE_NAME = "BLUEPRINTS";
-    final static String UUID = "uuid";
     final static String NAME = "Name";
+    final static String OWNER ="nickname";
     final static String INGERDIENTS = "ingredients";
     final static String PRICESUM = "priceSum";
     final static String CRAFTINGHOURS = "craftingTimeHours";
 
-    public static void addBlueprint(SQLiteDatabase writableDatabase, Blueprint blueprint) {
+    public static void writeBlueprint(SQLiteDatabase writableDatabase, Blueprint blueprint,
+                                      String owner) {
         ContentValues values = new ContentValues();
 
-        values.put(UUID, blueprint.getUUID());
         values.put(NAME, blueprint.getName());
         values.put(INGERDIENTS, new Gson().toJson(blueprint.getIngredients()));
         values.put(PRICESUM, blueprint.getTotalCost());
         values.put(CRAFTINGHOURS, blueprint.getCraftingTime());
+        values.put(OWNER, owner);
 
-        long rowId = writableDatabase.insert(TABLE_NAME, UUID, values);
+
+        long rowId = writableDatabase.insertWithOnConflict(
+                TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
         if (rowId <= 0) {
             Log.e("TAG","fail to insert into blueprints");
         }
     }
 
-    public static Blueprint getBlueprintByUuid(SQLiteDatabase readableDatabase, String uid) {
-        String[] selectionArgs = {uid};
-        Cursor cursor = readableDatabase.query(TABLE_NAME,null, UUID + " = ?",selectionArgs ,null,null,null);
+    /*public static Blueprint getBlueprintsByOwner(SQLiteDatabase readableDatabase, String owner) {
+        String[] selectionArgs = {owner};
+        Cursor cursor = readableDatabase.query(TABLE_NAME,null, owner + " = ?",selectionArgs ,null,null,null);
         Blueprint blueprint = null;
         if (cursor.moveToFirst() == true){
-
-            String uuid = cursor.getString(cursor.getColumnIndex(UUID));
             String name = cursor.getString(cursor.getColumnIndex(NAME));
             String ingredients = cursor.getString(cursor.getColumnIndex(INGERDIENTS));
             String priceSum = cursor.getString(cursor.getColumnIndex(PRICESUM));
@@ -59,19 +60,20 @@ public class BlueprintsSql {
         }
 
         return blueprint;
-    }
+    }*/
 
-    public static List<Blueprint> GetAllBlueprints(SQLiteDatabase readableDatabase){
+    public static ArrayList<Blueprint> GetBlueprintsByOwner(SQLiteDatabase readableDatabase){
         Blueprint blueprint = null;
-        Cursor cursor;
-        String selectQuery = "SELECT  * FROM " + TABLE_NAME;
-        cursor = readableDatabase.rawQuery(selectQuery, null);
+        String owner = StaticProfilesSql.curr_owner.toString();
+        String[] selectionArgs = {owner};
+        Cursor cursor = readableDatabase.query(
+                TABLE_NAME,null, OWNER + " = ?",
+                selectionArgs ,null,null,null);
 
-        List<Blueprint> blueprints = new ArrayList<Blueprint>();
+        ArrayList<Blueprint> blueprints = new ArrayList<Blueprint>();
 
         if (cursor.moveToFirst()){
             do {
-                String uuid = cursor.getString(cursor.getColumnIndex(UUID));
                 String name = cursor.getString(cursor.getColumnIndex(NAME));
                 String ingredients = cursor.getString(cursor.getColumnIndex(INGERDIENTS));
                 String priceSum = cursor.getString(cursor.getColumnIndex(PRICESUM));
@@ -90,8 +92,8 @@ public class BlueprintsSql {
 
     public static void create(SQLiteDatabase sqLiteDatabase)
     {
-        sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_NAME +
-                " (" + UUID + " TEXT, " + NAME +
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
+                " (" + OWNER + " TEXT, " + NAME +
                 " TEXT, " + INGERDIENTS + " TEXT, " + PRICESUM +
                 " TEXT, "  + CRAFTINGHOURS +
                 " TEXT)");
@@ -102,7 +104,7 @@ public class BlueprintsSql {
     }
 
     private static String[] getColumns(){
-        String[] columns = {UUID,NAME,INGERDIENTS,PRICESUM,CRAFTINGHOURS};
+        String[] columns = {OWNER,NAME,INGERDIENTS,PRICESUM,CRAFTINGHOURS};
         return columns;
     }
 }

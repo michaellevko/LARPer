@@ -8,6 +8,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.user.larper.Model.Blueprint;
 import com.example.user.larper.Model.Model;
+import com.example.user.larper.Model.ModelSqlite;
 
 import java.util.ArrayList;
 
@@ -33,6 +35,8 @@ public class BlueprintsFragment extends ListFragment {
         View view = inflater.inflate(R.layout.fragment_blueprints, container, false);
 
         // Set list adapter
+        Model.getInstance().setBlueprints(this.getOwnerBlueprints());
+
         bpList = Model.getInstance().getBlueprints();
         setListAdapter(adapter);
 
@@ -46,6 +50,12 @@ public class BlueprintsFragment extends ListFragment {
         return view;
     }
 
+    public ArrayList<Blueprint> getOwnerBlueprints()
+    {
+        ModelSqlite sql = new ModelSqlite(this.getContext());
+        return sql.getOwnerBlueprints();
+
+    }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
