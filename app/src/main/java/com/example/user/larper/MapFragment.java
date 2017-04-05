@@ -18,17 +18,22 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.user.larper.Model.ModelFilesystem;
 import com.example.user.larper.Model.ModelFirebase;
+import com.example.user.larper.Model.ModelSqlite;
 import com.example.user.larper.Model.StaticProfile;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 
 public class MapFragment extends Fragment {
@@ -40,6 +45,7 @@ public class MapFragment extends Fragment {
     private Bitmap currBitmap;
     private File currBitmapFile;
     final static String SUFFIX = "_objective.jpeg";
+    private ArrayList<StaticProfile> contacts;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,6 +61,16 @@ public class MapFragment extends Fragment {
         mDrawingView=new DrawingView(factivity);
         LinearLayout mDrawingPad=(LinearLayout)view.findViewById(R.id.draw_layout);
         mDrawingPad.addView(mDrawingView);
+
+        contacts = new ArrayList<>();
+        final ArrayAdapter adapter = new ArrayAdapter(
+                activity.getBaseContext(),
+                android.R.layout.simple_spinner_item,
+                contacts);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        final Spinner spinner = ((Spinner) view.findViewById(R.id.spinner));
+        spinner.setVisibility(View.INVISIBLE);
+        spinner.setAdapter(adapter);
 
         // set listener for load button
         final Button button = (Button) view.findViewById(R.id.button2);
@@ -117,29 +133,44 @@ public class MapFragment extends Fragment {
             public void onClick(View v) {
                 if(isLoaded)
                 {
-                    if (saveImage())
-                    {
-                        File save_file = new File(currBitmapFile.getParent()
-                                + "/" + FilenameUtils.removeExtension(currBitmapFile.getName())
-                                + SUFFIX);
-                        ModelFirebase.saveFile(save_file, new ModelFirebase.FirebaseListener() {
-                            @Override
-                            public void complete(boolean result) {
-                                if (result) {
-                                    Toast.makeText(
-                                            activity.getApplicationContext(),
-                                            "Successfully shared objective",
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(
-                                            activity.getApplicationContext(),
-                                            "Failed sharing objective",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            }
+                    contacts = getOwnerContacts();
+                    adapter.notifyDataSetChanged();
+                    spinner.setVisibility(View.VISIBLE);
+                    spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view,
+                                                int position, long id) {
+                            if (saveImage())
+                            {
+                                File save_file = new File(
+                                        currBitmapFile.getParent()
+                                        + "/" + FilenameUtils.removeExtension(
+                                        currBitmapFile.getName())
+                                        + SUFFIX);
+                                ModelFirebase.saveFile(save_file,
+                                        new ModelFirebase.FirebaseListener() {
+                                    @Override
+                                    public void complete(boolean result) {
+                                        if (result) {
+                                            Toast.makeText(
+                                                    activity.getApplicationContext(),
+                                                    "Successfully shared objective",
+                                                    Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(
+                                                    activity.getApplicationContext(),
+                                                    "Failed sharing objective",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                        spinner.setVisibility(View.INVISIBLE);
+                                    }
 
-                        }, new StaticProfile("kaki", "pipi"));
-                    }
+                                }, new StaticProfile(
+                                                spinner.getSelectedItem().toString(),
+                                                "false"));
+                            }
+                        }
+                    });
                 }
             }
 
@@ -177,6 +208,12 @@ public class MapFragment extends Fragment {
         this.isLoaded = true;
         this.currBitmap = bitmap;
         this.currBitmapFile = file;
+    }
+
+    public ArrayList<StaticProfile> getOwnerContacts()
+    {
+        ModelSqlite sql = new ModelSqlite(this.getContext());
+        return sql.getOwnerContacts();
     }
 
     public boolean saveImage(){
