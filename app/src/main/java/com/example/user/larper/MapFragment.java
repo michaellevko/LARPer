@@ -46,6 +46,7 @@ public class MapFragment extends Fragment {
     private File currBitmapFile;
     final static String SUFFIX = "_objective.jpeg";
     private ArrayList<StaticProfile> contacts;
+    Spinner spinner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,15 +63,32 @@ public class MapFragment extends Fragment {
         LinearLayout mDrawingPad=(LinearLayout)view.findViewById(R.id.draw_layout);
         mDrawingPad.addView(mDrawingView);
 
+        // init contact spinner adapter
         contacts = new ArrayList<>();
         final ArrayAdapter adapter = new ArrayAdapter(
                 activity.getBaseContext(),
                 android.R.layout.simple_spinner_item,
                 contacts);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        final Spinner spinner = ((Spinner) view.findViewById(R.id.spinner));
+
+        // define spinner
+        spinner = ((Spinner) view.findViewById(R.id.spinner));
         spinner.setVisibility(View.INVISIBLE);
         spinner.setAdapter(adapter);
+
+        // handle spinner contact selection
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                spinner.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
+                shareImage();
+            }
+        });
 
         // set listener for load button
         final Button button = (Button) view.findViewById(R.id.button2);
@@ -131,53 +149,52 @@ public class MapFragment extends Fragment {
         final Button button_share = (Button) view.findViewById(R.id.button8);
         button_share.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                // check if there is an image to shares
                 if(isLoaded)
                 {
-                    contacts = getOwnerContacts();
+                    // refresh contact list
+                    contacts.clear();
+                    contacts.addAll(getOwnerContacts());
                     adapter.notifyDataSetChanged();
-                    spinner.setVisibility(View.VISIBLE);
-                    spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view,
-                                                int position, long id) {
-                            if (saveImage())
-                            {
-                                File save_file = new File(
-                                        currBitmapFile.getParent()
-                                        + "/" + FilenameUtils.removeExtension(
-                                        currBitmapFile.getName())
-                                        + SUFFIX);
-                                ModelFirebase.saveFile(save_file,
-                                        new ModelFirebase.FirebaseListener() {
-                                    @Override
-                                    public void complete(boolean result) {
-                                        if (result) {
-                                            Toast.makeText(
-                                                    activity.getApplicationContext(),
-                                                    "Successfully shared objective",
-                                                    Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(
-                                                    activity.getApplicationContext(),
-                                                    "Failed sharing objective",
-                                                    Toast.LENGTH_SHORT).show();
-                                        }
-                                        spinner.setVisibility(View.INVISIBLE);
-                                    }
 
-                                }, new StaticProfile(
-                                                spinner.getSelectedItem().toString(),
-                                                "false"));
-                            }
-                        }
-                    });
+                    // make contact spinner visible
+                    spinner.setVisibility(View.VISIBLE);
                 }
             }
-
         });
 
 
         return view;
+    }
+
+    public void shareImage()
+    {
+        File save_file = new File(
+                currBitmapFile.getParent()
+                        + "/" + FilenameUtils.removeExtension(
+                        currBitmapFile.getName())
+                        + SUFFIX);
+        ModelFirebase.saveFile(save_file,
+                new ModelFirebase.FirebaseListener() {
+                    @Override
+                    public void complete(boolean result) {
+                        if (result) {
+                            Toast.makeText(
+                                    activity.getApplicationContext(),
+                                    "Successfully shared objective",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(
+                                    activity.getApplicationContext(),
+                                    "Failed sharing objective",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        spinner.setVisibility(View.INVISIBLE);
+                    }
+
+                }, new StaticProfile(
+                        spinner.getSelectedItem().toString(),
+                        "false"));
     }
 
     public void loadImage(){
