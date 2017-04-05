@@ -9,7 +9,6 @@ import java.util.UUID;
 
 public class Blueprint {
 
-    private String uuid;
     private String name;
     private ArrayList<Ingredient> ingredients;
     private String totalCost;
@@ -20,12 +19,16 @@ public class Blueprint {
         this.ingredients = new ArrayList<>(ingredients);
         this.totalCost = this.calcPriceSum(ingredients);
         this.craftingTime = craftDurr;
-        this.uuid = UUID.randomUUID().toString();
+    }
+
+    public Blueprint(BlueprintAndOwner blueprintowner) {
+        this.name = blueprintowner.name;
+        this.ingredients = blueprintowner.ingredients;
+        this.totalCost = blueprintowner.totalCost;
+        this.craftingTime = blueprintowner.craftingTime;
     }
 
     public String getName() { return name; }
-
-    public String getUUID() {return this.uuid;}
 
     public void setName(String name) { this.name = name; }
 
