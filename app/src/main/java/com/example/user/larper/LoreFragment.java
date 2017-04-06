@@ -99,19 +99,6 @@ public class LoreFragment extends ListFragment {
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.lore_row_details, null);
-                ImageButton loreShare = (ImageButton)convertView.findViewById(R.id.lore_share_btn);
-                /*Drawable shareImg = getResources().getDrawable(R.drawable.share_icon);
-                shareImg.setBounds(0, 0, (int)(shareImg.getIntrinsicWidth()*0.1),
-                        (int)(shareImg.getIntrinsicHeight()*0.1));
-                ScaleDrawable sd = new ScaleDrawable(shareImg, 0, )
-                loreShare.setImageDrawable(shareImg);
-                */
-                loreShare.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        /*TODO: Implement share to firebase*/
-                    }
-                });
             }
             Profile profile = loreList.get(position);
             ((TextView)convertView.findViewById(R.id.lore_name_tv)).setText(profile.getNickName());

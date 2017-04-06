@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.user.larper.Model.Model;
 import com.example.user.larper.Model.ModelSqlite;
@@ -82,6 +83,14 @@ public class NewLoreFragment extends ListFragment {
                 sql.createProfile(profile);
 
 
+                mListener.gotoLoreInterface();
+            }
+        });
+
+        ((Button)view.findViewById(R.id.lore_new_cancel_btn)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Canceled.", Toast.LENGTH_SHORT).show();
                 mListener.gotoLoreInterface();
             }
         });
