@@ -21,6 +21,7 @@
     <string name="new_item_btn">New</string>
     <string name="edit_item_btn">Edit</string>
     <string name="del_item_btn">Delete</string>
+    <string name="edit_blueprint">EditBlueprint</string>
     <string-array name="Genders">
         <item>Male</item>
         <item>Female</item>

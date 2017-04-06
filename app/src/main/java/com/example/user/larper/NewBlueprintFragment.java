@@ -36,6 +36,18 @@ import java.util.List;
 public class NewBlueprintFragment extends Fragment {
 
     private OnNewBlueprintFragmentListener mListener;
+    private Blueprint existingBp;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        String key = getResources().getString(R.string.edit_blueprint);
+        if (this.getArguments().containsKey(key)) {
+            Blueprint bp = Model.getInstance().getBlueprints()
+                    .get(this.getArguments().getInt(key));
+            existingBp = new Blueprint(bp.getName(), bp.getIngredients(), bp.getCraftingTime());
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,16 +55,31 @@ public class NewBlueprintFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_new_blueprint, container, false);
 
-        // Set list adapter for ingredients listview
-        ListView lv = (ListView)view.findViewById(R.id.blueprint_ingredients_lv);
-        final ArrayList<Ingredient> ingList = new ArrayList<>();
-        final IngredientAdapter adapter = new IngredientAdapter(getActivity(),
-                R.layout.ingredient_row_details, R.id.ingredient_name_et, ingList);
-        lv.setAdapter(adapter);
-
         final EditText bpName = (EditText)view.findViewById(R.id.blueprint_name_et);
         final EditText bpCraftDurH = (EditText)view.findViewById(R.id.blueprint_crafting_time_hours_et);
         final EditText bpCraftDurM = (EditText)view.findViewById(R.id.blueprint_crafting_time_minutes_et);
+        final ArrayList<Ingredient> ingList;
+
+        // Check for existing blueprint
+        if (existingBp == null) {
+            ingList = new ArrayList<>();
+        } else {
+            ingList = new ArrayList<>(existingBp.getIngredients());
+            bpName.setText(existingBp.getName());
+            String craftTimeH = existingBp.getCraftingTime()
+                    .substring(0, existingBp.getCraftingTime().indexOf("h"));
+            bpCraftDurH.setText(craftTimeH);
+            String craftTimeM = existingBp.getCraftingTime()
+                    .substring(existingBp.getCraftingTime().indexOf(":"),
+                            existingBp.getCraftingTime().length()-1);
+            bpCraftDurM.setText(craftTimeM);
+        }
+
+        // Set list adapter for ingredients listview
+        ListView lv = (ListView)view.findViewById(R.id.blueprint_ingredients_lv);
+        final IngredientAdapter adapter = new IngredientAdapter(getActivity(),
+                R.layout.ingredient_row_details, R.id.ingredient_name_et, ingList);
+        lv.setAdapter(adapter);
 
         Button bpSave = (Button)view.findViewById(R.id.blueprint_new_save_btn);
         bpSave.setOnClickListener(new View.OnClickListener() {
@@ -200,8 +227,9 @@ public class NewBlueprintFragment extends Fragment {
 
             ViewHolder vh = (ViewHolder)convertView.getTag();
             vh.ingName.setText(ing.getName());
-            vh.price.setText(ing.getPrice());
-            vh.quantity.setText(ing.getQuantity());
+            if (Integer.parseInt(ing.getPrice()) != 0) { vh.price.setText(ing.getPrice()); }
+            if (Integer.parseInt(ing.getQuantity()) != 0) { vh.price.setText(ing.getQuantity()); }
+
             vh.totalCost.setText(ing.getPriceSum());
 
             return convertView;
