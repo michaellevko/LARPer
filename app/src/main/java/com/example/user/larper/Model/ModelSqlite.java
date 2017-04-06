@@ -66,6 +66,12 @@ public class ModelSqlite {
                                      blueprint, owner);
     }
 
+    public void deleteBlueprint(Blueprint blueprint)
+    {
+        BlueprintsSql.deleteBlueprint(blueprintsHelper.getWritableDatabase(),
+                blueprint);
+    }
+
     public ArrayList<StaticProfile> getOwnerContacts()
     {
         return StaticProfilesSql.getContactsByOwner(

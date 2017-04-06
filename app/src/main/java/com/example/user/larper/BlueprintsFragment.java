@@ -175,6 +175,8 @@ public class BlueprintsFragment extends ListFragment {
                 public void onClick(View v) {
                     bpList.remove(bp);
                     adapter.notifyDataSetChanged();
+                    ModelSqlite sql = new ModelSqlite(getContext());
+                    sql.deleteBlueprint(bp);
                 }
             });
 
