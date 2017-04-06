@@ -58,11 +58,15 @@ public class NewBlueprintFragment extends Fragment {
         bpSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ingList.size() > 0) {
+
+                String name = bpName.getText().toString();
+                String craftTimeH = bpCraftDurH.getText().toString();
+                String craftTimeM = bpCraftDurM.getText().toString();
+
+                if (validateInput(name, craftTimeH, craftTimeM, ingList)) {
                     String craftTime = bpCraftDurH.getText().toString() +
                             "h:" + bpCraftDurM.getText().toString() + "m";
-                    Blueprint blueprintToSave = new Blueprint(bpName.getText().toString(),
-                            ingList, craftTime);
+                    Blueprint blueprintToSave = new Blueprint(name, ingList, craftTime);
 
                     // save in memory
                     Model.getInstance().addBlueprint(blueprintToSave);
@@ -74,9 +78,6 @@ public class NewBlueprintFragment extends Fragment {
                     Toast.makeText(getActivity(), "Blueprint Saved.", Toast.LENGTH_SHORT).show();
 
                     mListener.gotoBlueprintInterface();
-                } else {
-                    Toast.makeText(getActivity(), "Blueprint must contain at least one ingredient.",
-                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -101,6 +102,19 @@ public class NewBlueprintFragment extends Fragment {
 
 
         return view;
+    }
+
+    private boolean validateInput(String name, String craftTimeH, String craftTimeM, ArrayList<Ingredient> ingList) {
+        boolean isValid = true;
+
+        if ((name.equals("")) || (craftTimeH.equals("")) || (craftTimeM.equals("")) ||
+                (ingList.size() == 0)) {
+            isValid = false;
+            Toast.makeText(getActivity(), "Must fill all fields in blueprint.",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        return isValid;
     }
 
     @Override

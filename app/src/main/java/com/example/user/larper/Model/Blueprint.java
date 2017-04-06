@@ -49,7 +49,7 @@ public class Blueprint {
     private String calcPriceSum(ArrayList<Ingredient> ingredients) {
         int sum = 0;
         for (Ingredient ing: ingredients) {
-            sum += Integer.parseInt(ing.getPrice());
+            sum += Integer.parseInt(ing.getPriceSum());
         }
         return Integer.toString(sum);
     }

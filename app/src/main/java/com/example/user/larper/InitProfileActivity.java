@@ -85,9 +85,7 @@ public class InitProfileActivity extends ListActivity {
                         .getText().toString();
                 ArrayList<Skill> skills = lvAdapter.getItems();
 
-                if (!validateInput(nickName, age, race, scenarioClass, bio, hitpoints, skills)) {
-
-                } else {
+                if (validateInput(nickName, age, race, scenarioClass, bio, hitpoints, skills)) {
                     Profile acctProfile = new Profile(nickName, age, gender, race,
                             scenarioClass, bio, hitpoints, lvAdapter.getItems());
                     Model.getInstance().setProfile(acctProfile);
