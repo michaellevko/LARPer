@@ -34,7 +34,7 @@ public class SkillsAdapter extends ArrayAdapter<Skill> {
         this.context = context;
     }
 
-    class ViewHolder{
+    private class ViewHolder{
         CustomTextWatcher textWatch;
         protected EditText skillName;
         protected EditText skillLevel;

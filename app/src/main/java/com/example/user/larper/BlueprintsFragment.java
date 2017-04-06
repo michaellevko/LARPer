@@ -112,8 +112,6 @@ public class BlueprintsFragment extends ListFragment {
 
     public class BlueprintAdapter extends BaseAdapter {
 
-        ArrayList<StaticProfile> contacts;
-
         @Override
         public int getCount() {
             return bpList.size();
@@ -132,6 +130,8 @@ public class BlueprintsFragment extends ListFragment {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
 
+            final Blueprint bp = bpList.get(position);
+
             final ArrayList<Integer> spinnerCount = new ArrayList<>();
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater()
@@ -139,9 +139,6 @@ public class BlueprintsFragment extends ListFragment {
             }
 
             ImageButton bpShare = (ImageButton)convertView.findViewById(R.id.blueprint_share_btn);
-            /*Drawable shareImg = getResources().getDrawable(R.drawable.share_icon);
-            shareImg.setBounds(0, 0, 40, 40);
-            bpShare.setImageDrawable(shareImg);*/
 
             // handle spinner contact selection
             if (spinner.getOnItemClickListener() == null) {
@@ -173,7 +170,14 @@ public class BlueprintsFragment extends ListFragment {
                 }
             });
 
-            Blueprint bp = bpList.get(position);
+            ((ImageButton)convertView.findViewById(R.id.blueprint_delete_btn)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    bpList.remove(bp);
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
             ((TextView)convertView.findViewById(R.id.blueprint_name_tv)).setText(bp.getName());
             ((TextView)convertView.findViewById(R.id.blueprint_crafting_time_tv)).setText(bp.getCraftingTime());
             ((TextView)convertView.findViewById(R.id.blueprint_total_cost_tv)).setText(bp.getTotalCost());

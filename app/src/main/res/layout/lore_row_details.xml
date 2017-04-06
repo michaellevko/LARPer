@@ -70,13 +70,4 @@
         android:layout_toRightOf="@+id/textView4"
         android:layout_toEndOf="@+id/textView4" />
 
-    <ImageButton
-        android:id="@+id/lore_share_btn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/share_icon"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
 </RelativeLayout>
