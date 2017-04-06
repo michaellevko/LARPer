@@ -132,6 +132,7 @@ public class BlueprintsFragment extends ListFragment {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
 
+            final ArrayList<Integer> spinnerCount = new ArrayList<>();
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.blueprint_row_details, null);
@@ -145,7 +146,6 @@ public class BlueprintsFragment extends ListFragment {
             // handle spinner contact selection
             if (spinner.getOnItemClickListener() == null) {
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    boolean first = true;
 
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
@@ -154,13 +154,13 @@ public class BlueprintsFragment extends ListFragment {
 
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                        if (!first)
+                        if (spinnerCount.size() > 0)
                         {
                             shareBlueprint(position);
                         }
                         else
                         {
-                            first = false;
+                            spinnerCount.add(1);
                         }
                     }
                 });
@@ -192,12 +192,12 @@ public class BlueprintsFragment extends ListFragment {
                     public void complete(boolean result) {
                         if (result) {
                             Toast.makeText(
-                                    getActivity().getApplicationContext(),
+                                    getActivity().getBaseContext(),
                                     "Successfully shared blueprint",
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(
-                                    getActivity().getApplicationContext(),
+                                    getActivity().getBaseContext(),
                                     "Failed sharing blueprint",
                                     Toast.LENGTH_SHORT).show();
                         }
