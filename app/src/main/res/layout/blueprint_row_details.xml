@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:text="Blueprint Name:"
         android:textSize="20dp"
+        android:focusable="false"
         android:id="@+id/textView" />
 
     <TextView
@@ -19,6 +20,7 @@
         android:layout_height="wrap_content"
         android:text="Blueprint"
         android:textSize="20dp"
+        android:focusable="false"
         android:layout_marginLeft="13dp"
         android:layout_marginStart="13dp"
         android:layout_alignParentTop="true"
@@ -30,6 +32,7 @@
         android:layout_height="wrap_content"
         android:text="Crafting Time:"
         android:textSize="15dp"
+        android:focusable="false"
         android:layout_marginTop="11dp"
         android:layout_below="@+id/blueprint_name_tv"
         android:layout_alignParentLeft="true"
@@ -42,6 +45,7 @@
         android:layout_height="wrap_content"
         android:text="craftTime"
         android:textSize="15dp"
+        android:focusable="false"
         android:layout_marginLeft="12dp"
         android:layout_marginStart="12dp"
         android:layout_alignBaseline="@+id/textView3"
@@ -54,6 +58,7 @@
         android:layout_height="wrap_content"
         android:text="Total Cost:"
         android:textSize="15dp"
+        android:focusable="false"
         android:layout_alignBaseline="@+id/blueprint_crafting_time_tv"
         android:layout_alignBottom="@+id/blueprint_crafting_time_tv"
         android:layout_toRightOf="@+id/blueprint_name_tv"
@@ -66,6 +71,7 @@
         android:layout_height="wrap_content"
         android:text="totalCost"
         android:textSize="15dp"
+        android:focusable="false"
         android:layout_marginLeft="11dp"
         android:layout_marginStart="11dp"
         android:layout_alignBaseline="@+id/textView4"
@@ -78,6 +84,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/share_icon"
+        android:focusable="false"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -87,6 +94,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/delete"
+        android:focusable="false"
         android:layout_alignParentTop="true"
         android:layout_toStartOf="@+id/blueprint_share_btn"
         android:layout_marginEnd="11dp" />

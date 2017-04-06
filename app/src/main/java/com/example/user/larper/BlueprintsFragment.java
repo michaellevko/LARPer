@@ -56,7 +56,7 @@ public class BlueprintsFragment extends ListFragment {
         ((Button)view.findViewById(R.id.blueprint_new_btn)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.gotoNewBlueprintInterface();
+                mListener.gotoNewBlueprintInterface(new Bundle());
             }
         });
 
@@ -102,12 +102,15 @@ public class BlueprintsFragment extends ListFragment {
     }
 
     public interface OnBlueprintFragmentListener {
-        void gotoNewBlueprintInterface();
+        void gotoNewBlueprintInterface(Bundle bundle);
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
+        Bundle bundle = new Bundle();
+        bundle.putInt(getResources().getString(R.string.edit_blueprint), position);
+        mListener.gotoNewBlueprintInterface(bundle);
     }
 
     public class BlueprintAdapter extends BaseAdapter {

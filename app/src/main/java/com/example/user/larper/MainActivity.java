@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.user.larper.Model.Blueprint;
 import com.example.user.larper.Model.Model;
 
 public class MainActivity extends Activity
@@ -99,8 +100,10 @@ public class MainActivity extends Activity
     }
 
     @Override
-    public void gotoNewBlueprintInterface() {
-        this.goToFragment(new NewBlueprintFragment(), getString(R.string.new_blueprint_fragment));
+    public void gotoNewBlueprintInterface(Bundle bundle) {
+        NewBlueprintFragment bpFragment = new NewBlueprintFragment();
+        bpFragment.setArguments(bundle);
+        this.goToFragment(bpFragment, getString(R.string.new_blueprint_fragment));
     }
 
     @Override

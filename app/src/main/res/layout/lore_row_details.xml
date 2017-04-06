@@ -70,4 +70,13 @@
         android:layout_toRightOf="@+id/textView4"
         android:layout_toEndOf="@+id/textView4" />
 
+    <ImageButton
+        android:id="@+id/lore_delete_btn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/delete"
+        android:focusable="false"
+        android:layout_alignBottom="@+id/lore_hitpoints_tv"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>

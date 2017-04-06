@@ -96,11 +96,24 @@ public class LoreFragment extends ListFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            final Profile profile = loreList.get(position);
+
+
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.lore_row_details, null);
             }
-            Profile profile = loreList.get(position);
+
+            ((ImageButton)convertView.findViewById(R.id.lore_delete_btn)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    loreList.remove(profile);
+                    adapter.notifyDataSetChanged();
+                    ModelSqlite sql = new ModelSqlite(getContext());
+                    sql.deleteLore(profile);
+                }
+            });
+
             ((TextView)convertView.findViewById(R.id.lore_name_tv)).setText(profile.getNickName());
             ((TextView)convertView.findViewById(R.id.lore_race_tv)).setText(profile.getRace());
             ((TextView)convertView.findViewById(R.id.lore_hitpoints_tv)).setText(profile.getHitPoints());

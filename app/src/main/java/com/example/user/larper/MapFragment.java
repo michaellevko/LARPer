@@ -77,7 +77,10 @@ public class MapFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent)
             {
-                spinner.setVisibility(View.VISIBLE);
+                if(!first)
+                    shareImage();
+                else
+                    first = false;
             }
 
             @Override
