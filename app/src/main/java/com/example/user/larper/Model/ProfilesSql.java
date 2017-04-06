@@ -77,7 +77,7 @@ public class ProfilesSql {
     public static void deleteLore(SQLiteDatabase writableDatabase, Profile profile) {
         String owner = StaticProfilesSql.curr_owner.toString();
         String query = "SELECT rowid,* FROM " + TABLE_NAME + " WHERE " + NICKNAME + " = '" + profile.getNickName() +
-                "' AND " + AGE + " = '" + profile.getAge() + "' AND " + GENDER + " = '" +
+                 "' AND " + GENDER + " = '" +
                 profile.getGender() + "' AND "+ SCENARIOCLASS + " = '" + profile.getClass() + "' AND " +
                 RACE + " = '" + profile.getRace() + "' AND " + HITPOINTS + " = '" + profile.getHitPoints() + "'";
         Cursor cursor = writableDatabase.rawQuery(query, null);
