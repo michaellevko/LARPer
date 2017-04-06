@@ -12,9 +12,10 @@
 
         <Button
             android:id="@+id/lore_new_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text=""
+            android:background="@drawable/newplus"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
 
