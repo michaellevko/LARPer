@@ -47,7 +47,8 @@ public class BlueprintsSql {
         String owner = StaticProfilesSql.curr_owner.toString();
         String[] selectionArgs = {blueprint.getName(),blueprint.getTotalCost(), blueprint.getCraftingTime()};
         String query = "SELECT rowid,* FROM " + TABLE_NAME + " WHERE " + NAME + " = '" + blueprint.getName() +
-                "' AND " + PRICESUM + " = '" + blueprint.getTotalCost() + "' AND " + CRAFTINGHOURS + " = '" +
+                "' AND " + PRICESUM + " = '" + blueprint.getTotalCost() + "' AND " + OWNER + " = '" +
+                owner + "' AND " + CRAFTINGHOURS + " = '" +
                 blueprint.getCraftingTime() + "' ";
         Cursor cursor = writableDatabase.rawQuery(query, null);
 
