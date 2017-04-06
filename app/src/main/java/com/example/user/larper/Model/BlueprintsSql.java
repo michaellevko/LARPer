@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.google.firebase.database.Query;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -39,6 +40,27 @@ public class BlueprintsSql {
                 TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
         if (rowId <= 0) {
             Log.e("TAG","fail to insert into blueprints");
+        }
+    }
+
+    public static void deleteBlueprint(SQLiteDatabase writableDatabase, Blueprint blueprint) {
+        String owner = StaticProfilesSql.curr_owner.toString();
+        String[] selectionArgs = {blueprint.getName(),blueprint.getTotalCost(), blueprint.getCraftingTime()};
+        String query = "SELECT rowid,* FROM " + TABLE_NAME + " WHERE " + NAME + " = '" + blueprint.getName() +
+                "' AND " + PRICESUM + " = '" + blueprint.getTotalCost() + "' AND " + CRAFTINGHOURS + " = '" +
+                blueprint.getCraftingTime() + "' ";
+        Cursor cursor = writableDatabase.rawQuery(query, null);
+
+        try {
+            if (cursor.moveToFirst()) {
+                String rowId = ((Long)(cursor.getLong(cursor.getColumnIndex("rowid")))).toString();
+                writableDatabase.delete(TABLE_NAME, "rowid = ? ", new String[]{rowId});
+
+            }
+        }
+        catch(Exception e)
+        {
+            Log.d("tag", "error");
         }
     }
 

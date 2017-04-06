@@ -168,6 +168,7 @@ public class MapFragment extends Fragment {
 
     public void shareImage()
     {
+        saveImage();
         File save_file = new File(
                 currBitmapFile.getParent()
                         + "/" + FilenameUtils.removeExtension(
