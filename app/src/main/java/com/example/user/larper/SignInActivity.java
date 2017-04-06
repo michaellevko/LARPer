@@ -83,7 +83,7 @@ public class SignInActivity extends FragmentActivity implements
                     new ModelFirebaseRealtime.FirebaseRealtimeListener() {
                         @Override
                         public void complete(boolean result) {
-                            if ((result) && (Model.getInstance().getProfile() != null))
+                            if (result && (Model.getInstance().getProfile() != null))
                             {
                                 updateUI(true);
                                 launchMainActivity(acct);

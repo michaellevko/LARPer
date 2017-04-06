@@ -72,6 +72,12 @@ public class ModelSqlite {
                 blueprint);
     }
 
+    public void deleteLore(Profile profile)
+    {
+        ProfilesSql.deleteLore(profilesHelper.getWritableDatabase(),
+                profile);
+    }
+
     public ArrayList<StaticProfile> getOwnerContacts()
     {
         return StaticProfilesSql.getContactsByOwner(
