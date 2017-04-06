@@ -31,9 +31,10 @@
 
         <Button
             android:id="@+id/init_profile_save_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save Profile" />
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/save"
+            android:text="" />
     </LinearLayout>
 
     <include

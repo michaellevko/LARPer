@@ -17,17 +17,17 @@
 
         <Button
             android:id="@+id/lore_new_save_btn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="SAVE"
-            android:layout_weight="1"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/save"
+            android:text="" />
 
         <Button
             android:id="@+id/lore_new_cancel_btn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Cancel"
-            android:layout_weight="1"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/cancel"
+            android:text=""/>
 
     </LinearLayout>
 
